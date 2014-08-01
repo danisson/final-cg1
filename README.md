@@ -1,4 +1,4 @@
-final-cg1
+Trabalho Final de CG
 =========
 
-Trabalho Final de CG1 da UFC do semestre 2014.2
+Ainda não sei o que vamos fazer mas depois eu boto o cronograma aqui
