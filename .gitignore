@@ -3,7 +3,6 @@ release*/
 debug*/
 
 # Qt-es
-
 /.qmake.cache
 /.qmake.stash
 *.pro.user
@@ -16,12 +15,17 @@ Makefile*
 *-build-*
 
 # QtCreator
-
 *.autosave
 
 #QtCtreator Qml
 *.qmlproject.user
 *.qmlproject.user.*
+
+# workspace files are user-specific
+*.sublime-workspace
+
+#sftp configuration file
+sftp-config.json
 
 # Compiled Object files
 *.slo
