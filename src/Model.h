@@ -6,15 +6,22 @@
 
 namespace tnw {
 
-	typedef std::tuple<QVector3D,QVector3D,QVector3D> Face;
+	/** Uma face é simplesmente uma tripla de Vertices. */
+	typedef std::tuple<QVector3D,QVector3D,QVector3D> Face; // Talvez poderiamos usar referências?
 
+	/** Um vertice tem a mesma representação que um QVector3D. */
+	typedef QVector3D Vertice;
+
+	/**
+	 *  Esta classe representa um modelo. TODO
+	 */
 	class Model {
 	private:
-		QList<QVector3D> vertices;
-		QList<Face> faces;
+		QList<Vertice> vertices; //!< A lista de vertices normalzados do modelo.
+		QList<Face> faces; //!< A lista de faces do modelo.
 	public:
-		Model(QString pathname);
-		Model(QList<QVector3D> vertices,QList<Face> faces);
+		Model(QString pathname); //!< Construtor que recebe um arquivo OBJ.
+		Model(QList<Vertice> vertices,QList<Face> faces); //!< Construtor que recebe uma lista de vertices e faces.
 	};
 
 }
