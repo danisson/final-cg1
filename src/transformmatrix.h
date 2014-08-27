@@ -8,9 +8,11 @@ namespace tnw {
     public:
         double** matrix; //depois colocar como privado pls
         void multMatrixE(TransformMatrix* argumento);
+        TransformMatrix operator* (TransformMatrix &m);
+        TransformMatrix operator= (TransformMatrix m);
         TransformMatrix(double a[4][4]);
         TransformMatrix();
-        ~TransformMatrix();
+       // ~TransformMatrix();
         void mostrar();
     };
 }
