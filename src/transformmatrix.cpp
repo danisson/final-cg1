@@ -1,7 +1,17 @@
 #include "transformmatrix.h"
 #include<cstdio>
-#include<cstdlib>
 using namespace tnw;
+
+TransformMatrix::~TransformMatrix()
+{
+    if(matrix!=) {
+        for (int i = 0; i < 4; ++i) {
+            if(matriz[i]!=)
+                delete[] matrix[i];
+        }
+        delete[] matrix;
+    }
+}
 
 void TransformMatrix::multMatrixE(TransformMatrix* arg)
 {
@@ -26,9 +36,9 @@ TransformMatrix::TransformMatrix(double a[4][4]) : TransformMatrix::TransformMat
 
 TransformMatrix::TransformMatrix()
 {
-    this->matrix = (double**)malloc(sizeof(double*)*4);
+    this->matrix = new double*[4];
     for (int i = 0; i < 4; ++i) {
-        this->matrix[i] = (double*)malloc(sizeof(double)*4);
+        this->matrix[i] = new double[4];
         this->matrix[i][i] = 1;
         for (int j = 0; j < 4; ++j)
             if(j!=i)

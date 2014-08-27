@@ -10,6 +10,7 @@ namespace tnw {
         void multMatrixE(TransformMatrix* argumento);
         TransformMatrix(double a[4][4]);
         TransformMatrix();
+        ~TransformMatrix();
         void mostrar();
     };
 }
