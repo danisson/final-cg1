@@ -18,7 +18,9 @@ TEMPLATE = app
 
 
 SOURCES += \
-    src/main.cpp
+    src/main.cpp \
+    src/transformmatrix.cpp
 
 HEADERS += \
-    src/model.h
+    src/model.h \
+    src/transformmatrix.h
