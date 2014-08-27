@@ -1,12 +1,16 @@
 #ifndef TRANSFORMMATRIX_H
 #define TRANSFORMMATRIX_H
 
-class TransformMatrix
-{
-public:
-    double matrix[4][4];
-    TransformMatrix multMatrix(TransformMatrix nova);
-    TransformMatrix(double a[4][4]);
-};
+namespace tnw {
 
+    class TransformMatrix
+    {
+    public:
+        double** matrix; //depois colocar como privado pls
+        void multMatrixE(TransformMatrix* argumento);
+        TransformMatrix(double a[4][4]);
+        TransformMatrix();
+        void mostrar();
+    };
+}
 #endif // TRANSFORMMATRIX_H
