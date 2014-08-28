@@ -14,6 +14,8 @@ namespace tnw {
         TransformMatrix();
        // ~TransformMatrix();
         void mostrar();
+        void setMatrix(double a[4][4]);
+        double** getMatrix();
     };
 }
 #endif // TRANSFORMMATRIX_H

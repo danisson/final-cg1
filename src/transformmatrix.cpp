@@ -78,6 +78,26 @@ void TransformMatrix::mostrar()
     }
 }
 
+void TransformMatrix::setMatrix(double a[4][4])
+{
+    if (matrix==nullptr){
+        this->matrix = new double*[4];
+        for (int i=0; i<4; ++i){
+            this->matrix[i] = new double[4];
+        }
+    }
+    for (int i=0; i<4; ++i){
+        for (int j=0; j<4; ++j){
+            this->matrix[i][j] == a[i][j];
+        }
+    }
+}
+
+double** TransformMatrix::getMatrix()
+{
+    return this->matrix;
+}
+
 int main()
 {
     double x[4][4] = {{4,3,2,1},{4,3,2,1},{4,3,2,1},{4,3,2,1}};
