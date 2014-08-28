@@ -23,6 +23,10 @@ namespace tnw {
 
         // Desconstrutor
         ~TransformMatrix();
+
+        //Get and Setter
+        void setMatrix(double a[4][4]);
+        double** getMatrix();
     };
 }
 #endif // TRANSFORMMATRIX_H
