@@ -7,13 +7,22 @@ namespace tnw {
     {
     public:
         double** matrix; //depois colocar como privado pls
-        void multMatrixE(TransformMatrix* argumento);
-        TransformMatrix operator* (TransformMatrix &m);
-        TransformMatrix operator= (TransformMatrix m);
-        TransformMatrix(double a[4][4]);
-        TransformMatrix();
-       // ~TransformMatrix();
+
+        // Métodos
         void mostrar();
+
+        // Operadores
+        TransformMatrix operator*(const TransformMatrix& direita);  // Multiplicação de Matriz
+        TransformMatrix& operator= (const TransformMatrix& direita);// Atribuição
+
+        // Construtores
+        TransformMatrix(); // Identidade
+        TransformMatrix(double a[4][4]); // Por um vetor
+        TransformMatrix(double** a); // Por um vetor dinâmico
+        TransformMatrix(const TransformMatrix &obj); //Copiador
+
+        // Desconstrutor
+        ~TransformMatrix();
     };
 }
 #endif // TRANSFORMMATRIX_H
