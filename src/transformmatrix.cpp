@@ -6,9 +6,11 @@ using namespace tnw;
 // Métodos
 void TransformMatrix::mostrar()
 {
+    printf("┌──────────────────────────────────────────┐\n");
     for (int i = 0; i < 4; ++i) {
-        printf("[%lf %lf %lf %lf]\n",this->matrix[i][0],this->matrix[i][1],this->matrix[i][2],this->matrix[i][3]);
+        printf("│%0.3le, %0.3le, %0.3le, %0.3le│\n",this->matrix[i][0],this->matrix[i][1],this->matrix[i][2],this->matrix[i][3]);
     }
+    printf("└──────────────────────────────────────────┘\n");
 }
 
 // Operadores
@@ -105,9 +107,14 @@ void TransformMatrix::setMatrix(double a[4][4])
     }
     for (int i=0; i<4; ++i){
         for (int j=0; j<4; ++j){
-            this->matrix[i][j] == a[i][j];
+            this->matrix[i][j] = a[i][j];
         }
     }
+}
+
+void TransformMatrix::setMatrix(int i,int j,double a)
+{
+    this->matrix[i][j] = a;
 }
 
 double** TransformMatrix::getMatrix()
@@ -120,6 +127,8 @@ int main()
     double x[4][4] = {{4,3,2,1},{4,3,2,1},{4,3,2,1},{4,3,2,1}};
     TransformMatrix ident;
     TransformMatrix teste(x);
+    ident.setMatrix(0,1,1);
+    ident.mostrar();
     ident= teste * (ident);
     ident.mostrar();
     return 0;

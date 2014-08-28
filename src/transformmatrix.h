@@ -26,6 +26,7 @@ namespace tnw {
 
         //Get and Setter
         void setMatrix(double a[4][4]);
+        void setMatrix(int i,int j,double a);
         double** getMatrix();
     };
 }
