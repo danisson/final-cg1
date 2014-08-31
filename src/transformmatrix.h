@@ -5,9 +5,9 @@ namespace tnw {
 
     class TransformMatrix
     {
+    private:
+        double** matrix;
     public:
-        double** matrix; //depois colocar como privado pls
-
         // Métodos
         void mostrar();
 
@@ -28,6 +28,7 @@ namespace tnw {
         void setMatrix(double a[4][4]);
         void setMatrix(int i,int j,double a);
         double** getMatrix();
+        double getMatrix(int i, int j);
     };
 }
 #endif // TRANSFORMMATRIX_H

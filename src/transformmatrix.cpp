@@ -8,7 +8,7 @@ void TransformMatrix::mostrar()
 {
     printf("┌──────────────────────────────────────────┐\n");
     for (int i = 0; i < 4; ++i) {
-        printf("│%0.3le, %0.3le, %0.3le, %0.3le│\n",this->matrix[i][0],this->matrix[i][1],this->matrix[i][2],this->matrix[i][3]);
+        printf("│%0.3le, %0.3le, %0.3le, %0.3le│\n",matrix[i][0],matrix[i][1],matrix[i][2],matrix[i][3]);
     }
     printf("└──────────────────────────────────────────┘\n");
 }
@@ -120,6 +120,11 @@ void TransformMatrix::setMatrix(int i,int j,double a)
 double** TransformMatrix::getMatrix()
 {
     return this->matrix;
+}
+
+double TransformMatrix::getMatrix(int i, int j)
+{
+    return matrix[i][j];
 }
 
 int main()
