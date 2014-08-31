@@ -19,8 +19,10 @@ TEMPLATE = app
 
 SOURCES += \
     src/main.cpp \
-    src/transformmatrix.cpp
+    src/transformmatrix.cpp \
+    src/qqvector4d.cpp
 
 HEADERS += \
     src/model.h \
-    src/transformmatrix.h
+    src/transformmatrix.h \
+    src/qqvector4d.h
