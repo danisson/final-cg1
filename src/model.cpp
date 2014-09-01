@@ -63,8 +63,6 @@ tnw::Model::Model(QString pathname)
                                &(vertices[vtx[1]]),
                                &(vertices[vtx[2]]));
             break;
-        case 'vn': // Se for uma normal...
-            break;
         default:
             break;
         }
