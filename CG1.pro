@@ -18,7 +18,8 @@ TEMPLATE = app
 
 
 SOURCES += \
-    src/main.cpp
+	src/main.cpp \
+	src/model.cpp
 
 HEADERS += \
     src/model.h

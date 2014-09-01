@@ -17,11 +17,15 @@ namespace tnw {
 	 */
     class Model {
 	private:
-		QList<Vertice> vertices; //!< A lista de vertices normalzados do modelo.
-		QList<Face> faces; //!< A lista de faces do modelo.
+        QList<Vertice> vertices; // A lista de vertices normalzados do modelo.
+        QList<Face> faces; // A lista de faces do modelo.
 	public:
-		Model(QString pathname); //!< Construtor que recebe um arquivo OBJ.
-		Model(QList<Vertice> vertices,QList<Face> faces); //!< Construtor que recebe uma lista de vertices e faces.
+        // Get and Setters
+        QList<Vertice> getVertices();
+        QList<Face> getFaces();
+        // Construtores
+        Model(QString pathname); // Construtor que recebe um arquivo OBJ.
+        Model(QList<Vertice> vertices,QList<Face> faces); // Construtor que recebe uma lista de vertices e faces.
 	};
 
 }
