@@ -54,10 +54,10 @@ tnw::Model::Model(QString pathname)
                 verticesDaFace = parseada[i].split("/");
                 if(!verticesDaFace[0].isEmpty())
                     vtx[i-3] = verticesDaFace[0].toInt()-1;
-                if(!verticesDaFace[1].isEmpty())
-                    txt[i-3] = verticesDaFace[0].toInt()-1;
-                if(!verticesDaFace[2].isEmpty())
-                    nrm[i-3] = verticesDaFace[0].toInt()-1;
+                //if(!verticesDaFace[1].isEmpty())
+                    //txt[i-3] = verticesDaFace[0].toInt()-1;
+                //if(!verticesDaFace[2].isEmpty())
+                    //nrm[i-3] = verticesDaFace[0].toInt()-1;
             }
             faces << tnw::Face(&(vertices[vtx[0]]),
                                &(vertices[vtx[1]]),
