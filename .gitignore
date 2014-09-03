@@ -1,6 +1,7 @@
 # Ignore as pastas de compilação
 release*/
 debug*/
+build*/
 
 # Qt-es
 /.qmake.cache
