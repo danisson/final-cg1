@@ -4,9 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core
-
-QT       += gui
+QT       += core gui opengl
 
 TARGET = CG1
 
@@ -19,7 +17,14 @@ TEMPLATE = app
 
 SOURCES += \
 	src/main.cpp \
-	src/model.cpp
+	src/model.cpp \
+    src/janelaprincipal.cpp \
+    src/janelagl.cpp
 
 HEADERS += \
-    src/model.h
+    src/model.h \
+    src/janelaprincipal.h \
+    src/janelagl.h
+
+FORMS += \
+    src/janelaprincipal.ui

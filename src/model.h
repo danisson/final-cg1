@@ -20,6 +20,8 @@ namespace tnw {
         QList<Vertice> vertices; // A lista de vertices normalzados do modelo.
         QList<Face> faces; // A lista de faces do modelo.
 	public:
+        //Métodos
+        void desenhar();
         // Get and Setters
         QList<Vertice> getVertices();
         QList<Face> getFaces();

@@ -1,0 +1,32 @@
+#include "janelagl.h"
+#include "model.h"
+
+tnw::Model* modelo = new tnw::Model("../modelos/ico.obj");
+
+JanelaGL::JanelaGL(QWidget *parent) :
+    QGLWidget(parent)
+{
+}
+
+void JanelaGL::initializeGL()
+{
+    glPolygonMode(GL_FRONT, GL_LINE);
+    glPolygonMode(GL_BACK, GL_LINE);
+    //glClearColor(1,1,1,1);
+}
+
+void JanelaGL::resizeGL(int w, int h)
+{
+    glViewport(0,0,w,h);
+}
+
+void JanelaGL::paintGL()
+{
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glLoadIdentity();
+    glTranslated(0,0,0);
+    glRotated(25,0,-1,0);
+    glRotated(-10,1,0,0);
+    modelo->desenhar();
+
+}

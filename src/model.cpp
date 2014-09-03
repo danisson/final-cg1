@@ -5,6 +5,18 @@
 #include <QStringList>
 #include <QRegularExpression>
 #include <QRegExp>
+#include <GL/gl.h>
+
+void tnw::Model::desenhar()
+{
+    glBegin(GL_TRIANGLES);
+    foreach (tnw::Face f, this->faces) {
+        glVertex3d((std::get<0>(f))->x(),(std::get<0>(f))->y(),(std::get<0>(f))->z());
+        glVertex3d((std::get<1>(f))->x(),(std::get<1>(f))->y(),(std::get<1>(f))->z());
+        glVertex3d((std::get<2>(f))->x(),(std::get<2>(f))->y(),(std::get<2>(f))->z());
+    }
+    glEnd();
+}
 
 QList<tnw::Vertice> tnw::Model::getVertices()
 {
@@ -51,13 +63,13 @@ tnw::Model::Model(QString pathname)
             regularExpression.indexIn(linha);
             parseada = regularExpression.capturedTexts();
             for (int i = 3; i < 6; ++i) {
-                verticesDaFace = parseada[i].split("/");
+                verticesDaFace = parseada[i].split("/",QString::KeepEmptyParts);
                 if(!verticesDaFace[0].isEmpty())
                     vtx[i-3] = verticesDaFace[0].toInt()-1;
-                //if(!verticesDaFace[1].isEmpty())
-                    //txt[i-3] = verticesDaFace[0].toInt()-1;
-                //if(!verticesDaFace[2].isEmpty())
-                    //nrm[i-3] = verticesDaFace[0].toInt()-1;
+                if(verticesDaFace.size() > 1&&!verticesDaFace[1].isEmpty())
+                    txt[i-3] = verticesDaFace[0].toInt()-1;
+                if(verticesDaFace.size() > 2&&!verticesDaFace[2].isEmpty())
+                    nrm[i-3] = verticesDaFace[0].toInt()-1;
             }
             faces << tnw::Face(&(vertices[vtx[0]]),
                                &(vertices[vtx[1]]),
