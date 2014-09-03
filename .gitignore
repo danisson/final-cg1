@@ -32,7 +32,7 @@ sftp-config.json
 *.slo
 *.lo
 *.o
-*.obj
+#*.obj
 
 # Compiled Dynamic libraries
 *.so
