@@ -1,6 +1,7 @@
 # Ignore as pastas de compilação
 release*/
 debug*/
+build*/
 
 # Qt-es
 /.qmake.cache
@@ -31,7 +32,7 @@ sftp-config.json
 *.slo
 *.lo
 *.o
-*.obj
+#*.obj
 
 # Compiled Dynamic libraries
 *.so
