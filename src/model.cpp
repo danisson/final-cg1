@@ -83,6 +83,25 @@ tnw::Model::Model(QString pathname)
     delete[] txt;
     delete[] nrm;
 
+    float max[4]={0,0,0,0};
+    foreach (tnw::Vertice v, vertices) {
+        for (int i = 0; i < 3; ++i) {
+            if(std::abs(v[i]) > max[i])
+                max[i] = std::abs(v[i]);
+        }
+    }
+    for (int i = 0; i < 3; ++i) {
+        if(max[i] > max[3])
+            max[3] = max[i];
+    }
+    std::cout << max[3] << std::endl;
+
+    QMutableListIterator<tnw::Vertice> iter(vertices);
+    while (iter.hasNext()) {
+        tnw::Vertice v = iter.next();
+        iter.setValue(tnw::Vertice(v.x()/max[3],v.y()/max[3],v.z()/max[3]));
+    }
+
 }
 
 tnw::Model::Model(QList<tnw::Vertice> vertices, QList<tnw::Face> faces)

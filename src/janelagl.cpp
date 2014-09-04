@@ -1,7 +1,8 @@
 #include "janelagl.h"
 #include "model.h"
 
-tnw::Model* modelo = new tnw::Model("../modelos/ico.obj");
+tnw::Model* modelo = new tnw::Model("../modelos/Moinho.obj");
+                     //new tnw::Model("../modelos/ico.obj");
 
 JanelaGL::JanelaGL(QWidget *parent) :
     QGLWidget(parent)
@@ -24,9 +25,10 @@ void JanelaGL::paintGL()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
-    glTranslated(0,0,0);
-    glRotated(25,0,-1,0);
-    glRotated(-10,1,0,0);
+    //glOrtho(-1000,1000,-1000,1000,0,1000);
+    glTranslated(-0.4,-0.3,0);
+    glRotated(25,0,1,0);
+    glRotated(25,1,0,0);
     modelo->desenhar();
 
 }
