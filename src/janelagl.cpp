@@ -18,7 +18,10 @@ void JanelaGL::initializeGL()
 
 void JanelaGL::resizeGL(int w, int h)
 {
-    glViewport(0,0,w,h);
+    if(h<w)
+        glViewport((w-h)/2,0,h,h);
+    else
+        glViewport(0,(h-w)/2,w,w);
 }
 
 void JanelaGL::paintGL()
