@@ -73,11 +73,17 @@ tnw::Model::Model(QString pathname)
         case '#':
             // É um comentário
             break;
+        case 'g': // Se for um grupo.
+            grupos << QList<Vertice*>();
+            break;
         case 'v': // Se for um vértice ou uma normal ou uma textura...
             regularExpression.indexIn(linha);
             parseada = regularExpression.capturedTexts();
-            if(parseada[1] == "v")
+            if(parseada[1] == "v") {
                 vertices << QVector3D(parseada[3].toFloat(),parseada[4].toFloat(),parseada[5].toFloat());
+                if(grupos.length() > 0)
+                    grupos.last() << &vertices.last();
+            }
             break;
         case 'f': // Se for uma face...
             regularExpression.indexIn(linha);
@@ -137,6 +143,7 @@ tnw::Model::Model(QString pathname)
     pontoMedio.setY(medio[1]);
     pontoMedio.setZ(medio[2]);
 
+    std::cout << "Quantidade de grupos: " << grupos.length() << std::endl;
     std::cout << "Ponto Médio: " << pontoMedio[0] << " , " << pontoMedio[1] << " , " << pontoMedio[2] << std::endl;
 }
 

@@ -19,6 +19,7 @@ namespace tnw {
 	private:
         QList<Vertice> vertices; // A lista de vertices normalzados do modelo.
         QList<Face> faces; // A lista de faces do modelo.
+        QList<QList<Vertice*>> grupos; // A lista de grupos
         Vertice pontoMedio; // Ponto médio do objeto, pode estar desatualizado
 	public:
         //Métodos

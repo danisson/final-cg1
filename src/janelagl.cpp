@@ -3,6 +3,7 @@
 
 tnw::Model* modelo = new tnw::Model("../modelos/Moinho.obj");
                      //new tnw::Model("../modelos/ico.obj");
+                     //new tnw::Model("../modelos/cube.obj");
 
 JanelaGL::JanelaGL(QWidget *parent) :
     QGLWidget(parent)
