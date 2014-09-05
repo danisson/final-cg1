@@ -28,6 +28,26 @@ QList<tnw::Face> tnw::Model::getFaces()
     return this->faces;
 }
 
+tnw::Vertice tnw::Model::getPontoMedio()
+{
+    double medio[3] = {0,0,0};
+
+    foreach (Vertice v, vertices) {
+        for (int i = 0; i < 3; ++i) {
+            medio[i] += v[i];
+        }
+    }
+
+    for (int i = 0; i < 3; ++i) {
+        medio[i] /= vertices.length();
+    }
+    pontoMedio.setX(medio[0]);
+    pontoMedio.setY(medio[1]);
+    pontoMedio.setZ(medio[2]);
+
+    return pontoMedio;
+}
+
 tnw::Model::Model(QString pathname)
 {
     if(pathname.isEmpty())
@@ -94,7 +114,6 @@ tnw::Model::Model(QString pathname)
         if(max[i] > max[3])
             max[3] = max[i];
     }
-    std::cout << max[3] << std::endl;
 
     QMutableListIterator<tnw::Vertice> iter(vertices);
     while (iter.hasNext()) {
@@ -102,6 +121,23 @@ tnw::Model::Model(QString pathname)
         iter.setValue(tnw::Vertice(v.x()/max[3],v.y()/max[3],v.z()/max[3]));
     }
 
+    double medio[3] = {0,0,0};
+
+    foreach (Vertice v, vertices) {
+        for (int i = 0; i < 3; ++i) {
+            medio[i] += v[i];
+        }
+    }
+
+    for (int i = 0; i < 3; ++i) {
+        medio[i] /= vertices.length();
+    }
+
+    pontoMedio.setX(medio[0]);
+    pontoMedio.setY(medio[1]);
+    pontoMedio.setZ(medio[2]);
+
+    std::cout << "Ponto Médio: " << pontoMedio[0] << " , " << pontoMedio[1] << " , " << pontoMedio[2] << std::endl;
 }
 
 tnw::Model::Model(QList<tnw::Vertice> vertices, QList<tnw::Face> faces)

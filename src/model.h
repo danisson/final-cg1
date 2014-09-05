@@ -19,12 +19,14 @@ namespace tnw {
 	private:
         QList<Vertice> vertices; // A lista de vertices normalzados do modelo.
         QList<Face> faces; // A lista de faces do modelo.
+        Vertice pontoMedio; // Ponto médio do objeto, pode estar desatualizado
 	public:
         //Métodos
         void desenhar();
         // Get and Setters
         QList<Vertice> getVertices();
         QList<Face> getFaces();
+        Vertice getPontoMedio(); // Retorna e atualiza o ponto médio
         // Construtores
         Model(QString pathname); // Construtor que recebe um arquivo OBJ.
         Model(QList<Vertice> vertices,QList<Face> faces); // Construtor que recebe uma lista de vertices e faces.
