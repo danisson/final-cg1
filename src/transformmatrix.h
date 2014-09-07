@@ -1,6 +1,8 @@
 #ifndef TRANSFORMMATRIX_H
 #define TRANSFORMMATRIX_H
 
+#include <QVector4D>
+
 namespace tnw {
 
     class TransformMatrix
@@ -14,6 +16,8 @@ namespace tnw {
         // Operadores
         TransformMatrix operator*(const TransformMatrix& direita);  // Multiplicação de Matriz
         TransformMatrix& operator= (const TransformMatrix& direita);// Atribuição
+        double& operator() (unsigned i, unsigned j); // Acesso para modificação
+        double operator() (unsigned i, unsigned j) const; // Acesso para visualização
 
         // Construtores
         TransformMatrix(); // Identidade
@@ -26,23 +30,21 @@ namespace tnw {
 
         //Get and Setter
         void setMatrix(double a[4][4]);
-        void setMatrix(int i,int j,double a);
-        double** getMatrix();
-        double getMatrix(int i, int j);
     };
 
-    //Funções que retornam as matrizes de transformação
+    //Operador Matrix * QVector4D
+    QVector4D operator*(const TransformMatrix& right, const QVector4D& left);
 
-    TransformMatrix translacao(double a[3]);
+    //Funções que retornam as matrizes de transformação
+    TransformMatrix translacao(double x, double y, double z);
     TransformMatrix rotacaoX(double angGraus);
     TransformMatrix rotacaoY(double angGraus);
     TransformMatrix rotacaoZ(double angGraus);
     TransformMatrix rotacaoVetor(double angGraus, double p1[3], double p2[3]);
     TransformMatrix rotacaoVetorOrigem(double angGraus, double a[3]);
-    TransformMatrix escala(double a[3]);
+    TransformMatrix escala(double x, double y, double z);
 
     //Função pra transformar graus em radianos
-
     double radianos(double graus);
 
 }

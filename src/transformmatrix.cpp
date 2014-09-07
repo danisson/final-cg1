@@ -20,12 +20,12 @@ void TransformMatrix::mostrar()
 TransformMatrix TransformMatrix::operator*(const TransformMatrix& direita)
 {
     TransformMatrix retorno = direita;
-    int acc;
+    double acc;
     for (int i = 0; i < 4; ++i) {
         for (int j = 0; j < 4; ++j) {
             acc = 0;
             for (int k = 0; k < 4; ++k) {
-                acc+= matrix[i][k]*direita.matrix[k][j];
+                acc+= matrix[i][k]*direita(k,j);
             }
             retorno.matrix[i][j] = acc;
         }
@@ -41,6 +41,20 @@ TransformMatrix& TransformMatrix::operator=(const TransformMatrix& direita)
         }
     }
     return *this;
+}
+
+double &TransformMatrix::operator()(unsigned i, unsigned j)
+{
+    if (i >= 4 || j >= 4)
+        throw std::invalid_argument("Indice fora da matrix");
+    return matrix[i][j];
+}
+
+double TransformMatrix::operator()(unsigned i, unsigned j) const
+{
+    if (i >= 4 || j >= 4)
+        throw std::invalid_argument("Indice fora da matrix");
+    return matrix[i][j];
 }
 
 // Construtores
@@ -115,59 +129,59 @@ void TransformMatrix::setMatrix(double a[4][4])
     }
 }
 
-void TransformMatrix::setMatrix(int i,int j,double a)
+// Operador Matrix * QVector4D
+QVector4D tnw::operator*(const TransformMatrix &right, const QVector4D &left)
 {
-    this->matrix[i][j] = a;
+    QVector4D resultado;
+    double acc;
+    for (int i = 0; i < 4; ++i) {
+        for (int j = 0; j < 4; ++j) {
+            acc=0;
+            for (int k = 0; k < 4; ++k) {
+                acc+= right(i,k)*left[k];
+            }
+        }
+        resultado[i]=acc;
+    }
+    return resultado;
 }
 
-double** TransformMatrix::getMatrix()
+// Transformações Geométricas
+TransformMatrix tnw::translacao(double x,double y, double z)
 {
-    return this->matrix;
+    double m[4][4] = {{1,0,0,x},{0,1,0,y},{0,0,1,z},{0,0,0,1}};
+    return TransformMatrix(m);
 }
 
-double TransformMatrix::getMatrix(int i, int j)
+TransformMatrix tnw::escala(double x, double y, double z)
 {
-    return matrix[i][j];
+    double m[4][4] = {{x,0,0,0},{0,y,0,0},{0,0,z,0},{0,0,0,1}};
+    return TransformMatrix(m);
 }
 
-double radianos(double graus){
-    return (M_PI*graus)/180;
-}
-
-TransformMatrix translacao(double a[3])
+TransformMatrix tnw::rotacaoX(double angGraus)
 {
-    double m[4][4] = {{1,0,0,a[0]},{0,1,0,a[1]},{0,0,1,a[2]},{0,0,0,1}};
-    return new TransformMatrix(m);
-}
-
-TransformMatrix escala(double a[3])
-{
-    double m[4][4] = {{a[0],0,0,0},{0,a[1],0,0},{0,0,a[2],0},{0,0,0,1}};
-    return new TransformMatrix(m);
-}
-
-TransformMatrix rotacaoX(double angGraus)
-{
-    angRad = radianos(angGraus);
+    double angRad = radianos(angGraus);
     double m[4][4] = {{1,0,0,0},{0,cos(angRad),-sin(angRad),0},{0,sin(angRad),cos(angRad),0},{0,0,0,1}};
-    return new TransformMatrix(m);
+    return TransformMatrix(m);
 }
 
-TransformMatrix rotacaoY(double angGraus)
+TransformMatrix tnw::rotacaoY(double angGraus)
 {
-    angRad = radianos(angGraus);
+    double angRad = radianos(angGraus);
     double m[4][4] = {{cos(angRad),0,sin(angRad),1},{0,1,0,0},{-sin(angRad),0,cos(angRad),0},{0,0,0,1}};
-    return new TransformMatrix(m);
+    return TransformMatrix(m);
 }
 
-TransformMatrix rotacaoZ(double angGraus)
+TransformMatrix tnw::rotacaoZ(double angGraus)
 {
-    angRad = radianos(angGraus);
+    double angRad = radianos(angGraus);
     double m[4][4] = {{cos(angRad),-sin(angRad),0,0},{sin(angRad),cos(angRad),0,0},{0,0,1,0},{0,0,0,1}};
-    return new TransformMatrix(m);
+    return TransformMatrix(m);
 }
 
-TransformMatrix rotacaoVetor(double angGraus, double p1[3], double p2[3])
+
+/*TransformMatrix tnw::rotacaoVetor(double angGraus, double p1[3], double p2[3])
 {
     //Encontra o vetor formado por esses dois pontos!
     double x = p2[0]-p1[0];
@@ -189,58 +203,55 @@ TransformMatrix rotacaoVetor(double angGraus, double p1[3], double p2[3])
     //Passo 2: Levar o vetor de rotação para o plano xz
     double d = sqrt(b*b+c*c); //Comprimento da projeção do vetor no plano yz
 
-    /*double cosAngRotX = c/d;
-    double angRotX = acos(cosAngRotX);
-    angRotX = (angRotX*180)/M_PI
-    Podia definir a matriz em termos do ângulo de rotação ou direto?*/
+    //double cosAngRotX = c/d;
+    //double angRotX = acos(cosAngRotX);
+    //angRotX = (angRotX*180)/M_PI
+    //Podia definir a matriz em termos do ângulo de rotação ou direto?
 
-    //TransformMatrix MRot2 = new TransformMatrix();
     double a[4][4] = {{1,0,0,0},{0,c/d,-b/d,0},{0,b/d,c/d,0},{0,0,0,1}};
-    TransformMatrix MRot2 = MRot2.setMatrix(a);
+    TransformMatrix MRot2(a);
     //Ou MRot2 = rotacaoX(angRotX);
 
    //Passo 3: Rotacionar em relação ao eixo y para levar o vetor de rotação ao eixo z
-    TransformMatrix MRot3 = new TransformMatrix();
     a = {{d,0,0,-a},{0,1,0,0},{a,0,d,0},{0,0,0,1}};
-    MRot3 = MRot3.setMatrix(a);
+    TransformMatrix MRot3(a);
 
     //Passo 4:Rotacionar em torno de z pelo ângulo dado
-    TransformMatrix MRot4 = new TransformMatrix();
-    MRot4 = rotacaoZ(angGraus);
+    TransformMatrix MRot4 = rotacaoZ(angGraus);
 
     //Passos 5,6,7: Inverter as transformações aplicadas!
 
     //Passo 5: Inverter a rotação em y
-    TransformMatrix MRot5 = new TransformMatrix();
-    MRot5 = MRot5.setMatrix({ {d,0,a,0},{0,1,0,0},{-a,0,d,0},{0,0,0,1} });
+    TransformMatrix  MRot5({ {d,0,a,0},{0,1,0,0},{-a,0,d,0},{0,0,0,1} });
 
     //Passo 6: Inverter a rotação em x
-    TransformMatrix MRot6 = new TransformMatrix();
-    MRot6 = MRot6.setMatrix({ {1,0,0,0},{0,c/d,b/d,0},{0,-b/d,c/d,0},{0,0,0,1} });
+    TransformMatrix MRot6({ {1,0,0,0},{0,c/d,b/d,0},{0,-b/d,c/d,0},{0,0,0,1} });
     //Ou MRot6 = rotacaoX(-angRotX);
 
     //Passo 7: Inverter a translação
-    TransformMatrix MRot7 = new TransformMatrix();
-    MRot7 = translacao({p1[0],p1[1],p1[2]});
+    TransformMatrix MRot7 = translacao({p1[0],p1[1],p1[2]});
 
     //O resultado é a multiplicação das matrizes na ordem inversa em que foram nomeadas
 
     return MRot7*MRot6*MRot5*MRot4*MRot3*MRot2*MRot1;
 }
+*/
 
-TransformMatrix rotacaoVetorOrigem(double angGraus, double a[3])
-{
-    return rotacaoVetor(angGraus,{0,0,0},a);
+/*TransformMatrix tnw::rotacaoVetorOrigem(double angGraus, double a[3])
+//{
+    double origin[] = {0,0,0};
+    return rotacaoVetor(angGraus,origin,a);
+}*/
+
+double tnw::radianos(double graus){
+    return (M_PI*graus)/180;
 }
 
 int main()
 {
-    double x[4][4] = {{4,3,2,1},{4,3,2,1},{4,3,2,1},{4,3,2,1}};
-    TransformMatrix ident;
-    TransformMatrix teste(x);
-    ident.setMatrix(0,1,1);
-    ident.mostrar();
-    ident= teste * (ident);
-    ident.mostrar();
+    TransformMatrix ident = translacao(1,1,1);
+    QVector4D vetor(1,1,2,1);
+    vetor = ident * vetor;
+    printf("[ %.3f %.3f %.3f %.3f]\n",vetor[0],vetor[1],vetor[2],vetor[3]);
     return 0;
 }
