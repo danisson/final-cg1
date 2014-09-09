@@ -70,6 +70,31 @@ tnw::Vertice tnw::Model::getPontoMedio()
     return pontoMedio;
 }
 
+tnw::Vertice tnw::Model::getPontoMedio(int i)
+{
+    if(i < grupos.length()) {
+        double medio[3] = {0,0,0};
+        tnw::Vertice pontoMedioG;
+
+        foreach (Vertice* v, grupos[i]) {
+            for (int i = 0; i < 3; ++i) {
+                medio[i] += (*v)[i];
+            }
+        }
+
+        for (int i = 0; i < 3; ++i) {
+            medio[i] /= grupos[i].length();
+        }
+        pontoMedioG.setX(medio[0]);
+        pontoMedioG.setY(medio[1]);
+        pontoMedioG.setZ(medio[2]);
+
+        return pontoMedioG;
+    }
+    else
+        throw std::out_of_range("Grupo não existente");
+}
+
 tnw::Model::Model(QString pathname)
 {
     if(pathname.isEmpty())
@@ -96,7 +121,7 @@ tnw::Model::Model(QString pathname)
             // É um comentário
             break;
         case 'g': // Se for um grupo.
-            grupos << QList<Vertice*>();
+            grupos << tnw::Grupo(); // Adiciona um novo grupo
             break;
         case 'v': // Se for um vértice ou uma normal ou uma textura...
             regularExpression.indexIn(linha);

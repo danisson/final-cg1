@@ -14,6 +14,9 @@ namespace tnw {
 	/** Um vertice tem a mesma representação que um QVector3D. */
 	typedef QVector3D Vertice;
 
+    /* Um grupo de vértices é uma lista de vértices */
+    typedef QList<Vertice*> Grupo;
+
 	/**
 	 *  Esta classe representa um modelo. TODO
 	 */
@@ -21,7 +24,7 @@ namespace tnw {
 	private:
         QList<Vertice> vertices; // A lista de vertices normalzados do modelo.
         QList<Face> faces; // A lista de faces do modelo.
-        QList<QList<Vertice*>> grupos; // A lista de grupos
+        QList<Grupo> grupos; // A lista de grupos
         Vertice pontoMedio; // Ponto médio do objeto, pode estar desatualizado
 	public:
         //Métodos
@@ -32,6 +35,7 @@ namespace tnw {
         QList<Vertice> getVertices();
         QList<Face> getFaces();
         Vertice getPontoMedio(); // Retorna e atualiza o ponto médio
+        Vertice getPontoMedio(int i); // Retorna o ponto médio do i-ésimo grupo
         // Construtores
         Model(QString pathname); // Construtor que recebe um arquivo OBJ.
         Model(QList<Vertice> vertices,QList<Face> faces); // Construtor que recebe uma lista de vertices e faces.
