@@ -247,11 +247,11 @@ double tnw::radianos(double graus){
     return (M_PI*graus)/180;
 }
 
-int main()
+/*int main()
 {
     TransformMatrix ident = translacao(1,1,1);
     QVector4D vetor(1,1,2,1);
     vetor = ident * vetor;
     printf("[ %.3f %.3f %.3f %.3f]\n",vetor[0],vetor[1],vetor[2],vetor[3]);
     return 0;
-}
+}*/

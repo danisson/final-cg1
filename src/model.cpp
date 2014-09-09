@@ -18,6 +18,28 @@ void tnw::Model::desenhar()
     glEnd();
 }
 
+void tnw::Model::aplicarTransformacao(TransformMatrix m)
+{
+    QMutableListIterator<tnw::Vertice> iter(vertices);
+    while (iter.hasNext()) {
+        tnw::Vertice v = iter.next();
+        iter.setValue((m*QVector4D(v,1)).toVector3D());
+    }
+}
+
+void tnw::Model::aplicarTransformacao(tnw::TransformMatrix m, int i)
+{
+    if(i < grupos.length()) {
+        QMutableListIterator<tnw::Vertice*> iter(grupos[i]);
+        while (iter.hasNext()) {
+            tnw::Vertice* v = iter.next();
+            *v = ((m*QVector4D(*v,1)).toVector3D());
+        }
+    }
+    else
+        throw std::out_of_range("Grupo não existente");
+}
+
 QList<tnw::Vertice> tnw::Model::getVertices()
 {
     return this->vertices;

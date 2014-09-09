@@ -2,8 +2,9 @@
 #define TNW_MODEL_H
 #include <QList>
 #include <QVector3D>
+#include <QVector4D>
 #include <tuple>
-#include "transformatrix.h"
+#include "transformmatrix.h"
 
 namespace tnw {
 
@@ -25,8 +26,8 @@ namespace tnw {
 	public:
         //Métodos
         void desenhar();
-        void aplicarTransformação(TransformMatrix m); // Aplica a transformação no modelo inteiro
-        void aplicarTransformação(TransformMatrix m,unsigned i) // Aplica a transformação no i-ésimo grupo do modelo.
+        void aplicarTransformacao(TransformMatrix m); // Aplica a transformação no modelo inteiro
+        void aplicarTransformacao(TransformMatrix m,int i); // Aplica a transformação no i-ésimo grupo do modelo.
         // Get and Setters
         QList<Vertice> getVertices();
         QList<Face> getFaces();
