@@ -153,6 +153,11 @@ TransformMatrix tnw::translacao(double x,double y, double z)
     return TransformMatrix(m);
 }
 
+TransformMatrix tnw::translacao(QVector3D v)
+{
+    return tnw::translacao(v[0],v[1],v[2]);
+}
+
 TransformMatrix tnw::escala(double x, double y, double z)
 {
     double m[4][4] = {{x,0,0,0},{0,y,0,0},{0,0,z,0},{0,0,0,1}};
@@ -181,7 +186,7 @@ TransformMatrix tnw::rotacaoZ(double angGraus)
 }
 
 
-/*TransformMatrix tnw::rotacaoVetor(double angGraus, double p1[3], double p2[3])
+TransformMatrix tnw::rotacaoVetor(double angGraus, double p1[3], double p2[3])
 {
     //Encontra o vetor formado por esses dois pontos!
     double x = p2[0]-p1[0];
@@ -198,7 +203,7 @@ TransformMatrix tnw::rotacaoZ(double angGraus)
 
     //Passo 1: Levar um dos pontos para a origem
     //TransformMatrix MRot1 = new TransformMatrix();
-    TransformMatrix MRot1 = translacao({-p1[0],-p1[1],-p1[2]});
+    TransformMatrix MRot1 = translacao(-p1[0],-p1[1],-p1[2]);
 
     //Passo 2: Levar o vetor de rotação para o plano xz
     double d = sqrt(b*b+c*c); //Comprimento da projeção do vetor no plano yz
@@ -208,13 +213,13 @@ TransformMatrix tnw::rotacaoZ(double angGraus)
     //angRotX = (angRotX*180)/M_PI
     //Podia definir a matriz em termos do ângulo de rotação ou direto?
 
-    double a[4][4] = {{1,0,0,0},{0,c/d,-b/d,0},{0,b/d,c/d,0},{0,0,0,1}};
-    TransformMatrix MRot2(a);
+    double m1[4][4] = {{1,0,0,0},{0,c/d,-b/d,0},{0,b/d,c/d,0},{0,0,0,1}};
+    TransformMatrix MRot2(m1);
     //Ou MRot2 = rotacaoX(angRotX);
 
    //Passo 3: Rotacionar em relação ao eixo y para levar o vetor de rotação ao eixo z
-    a = {{d,0,0,-a},{0,1,0,0},{a,0,d,0},{0,0,0,1}};
-    TransformMatrix MRot3(a);
+    double m2[4][4] = {{d,0,0,-a},{0,1,0,0},{a,0,d,0},{0,0,0,1}};
+    TransformMatrix MRot3(m2);
 
     //Passo 4:Rotacionar em torno de z pelo ângulo dado
     TransformMatrix MRot4 = rotacaoZ(angGraus);
@@ -222,36 +227,35 @@ TransformMatrix tnw::rotacaoZ(double angGraus)
     //Passos 5,6,7: Inverter as transformações aplicadas!
 
     //Passo 5: Inverter a rotação em y
-    TransformMatrix  MRot5({ {d,0,a,0},{0,1,0,0},{-a,0,d,0},{0,0,0,1} });
+    double m3[4][4] = {{d,0,a,0},{0,1,0,0},{-a,0,d,0},{0,0,0,1}};
+    TransformMatrix  MRot5(m3);
 
     //Passo 6: Inverter a rotação em x
-    TransformMatrix MRot6({ {1,0,0,0},{0,c/d,b/d,0},{0,-b/d,c/d,0},{0,0,0,1} });
+    double m4[4][4] = {{1,0,0,0},{0,c/d,b/d,0},{0,-b/d,c/d,0},{0,0,0,1}};
+    TransformMatrix MRot6(m4);
     //Ou MRot6 = rotacaoX(-angRotX);
 
     //Passo 7: Inverter a translação
-    TransformMatrix MRot7 = translacao({p1[0],p1[1],p1[2]});
+    TransformMatrix MRot7 = translacao(p1[0],p1[1],p1[2]);
 
     //O resultado é a multiplicação das matrizes na ordem inversa em que foram nomeadas
 
     return MRot7*MRot6*MRot5*MRot4*MRot3*MRot2*MRot1;
 }
-*/
+TransformMatrix tnw::rotacaoVetor(double angGraus, QVector3D p1, QVector3D p2)
+{
+    double a[3] = {p1[0],p1[1],p1[2]};
+    double b[3] = {p2[0],p2[1],p2[2]};
+    return tnw::rotacaoVetor(angGraus,a,b);
+}
 
-/*TransformMatrix tnw::rotacaoVetorOrigem(double angGraus, double a[3])
-//{
+
+TransformMatrix tnw::rotacaoVetorOrigem(double angGraus, double a[3])
+{
     double origin[] = {0,0,0};
     return rotacaoVetor(angGraus,origin,a);
-}*/
+}
 
 double tnw::radianos(double graus){
     return (M_PI*graus)/180;
 }
-
-/*int main()
-{
-    TransformMatrix ident = translacao(1,1,1);
-    QVector4D vetor(1,1,2,1);
-    vetor = ident * vetor;
-    printf("[ %.3f %.3f %.3f %.3f]\n",vetor[0],vetor[1],vetor[2],vetor[3]);
-    return 0;
-}*/

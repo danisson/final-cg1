@@ -2,6 +2,7 @@
 #define TRANSFORMMATRIX_H
 
 #include <QVector4D>
+#include <QVector3D>
 
 namespace tnw {
 
@@ -37,10 +38,12 @@ namespace tnw {
 
     //Funções que retornam as matrizes de transformação
     TransformMatrix translacao(double x, double y, double z);
+    TransformMatrix translacao(QVector3D v);
     TransformMatrix rotacaoX(double angGraus);
     TransformMatrix rotacaoY(double angGraus);
     TransformMatrix rotacaoZ(double angGraus);
     TransformMatrix rotacaoVetor(double angGraus, double p1[3], double p2[3]);
+    TransformMatrix rotacaoVetor(double angGraus, QVector3D p1, QVector3D p2);
     TransformMatrix rotacaoVetorOrigem(double angGraus, double a[3]);
     TransformMatrix escala(double x, double y, double z);
 

@@ -53,19 +53,17 @@ QList<tnw::Face> tnw::Model::getFaces()
 tnw::Vertice tnw::Model::getPontoMedio()
 {
     double medio[3] = {0,0,0};
+    int n = vertices.length();
 
     foreach (Vertice v, vertices) {
         for (int i = 0; i < 3; ++i) {
-            medio[i] += v[i];
+            medio[i] += v[i]/n;
         }
     }
 
-    for (int i = 0; i < 3; ++i) {
-        medio[i] /= vertices.length();
-    }
-    pontoMedio.setX(medio[0]);
-    pontoMedio.setY(medio[1]);
-    pontoMedio.setZ(medio[2]);
+    pontoMedio[0] = medio[0];
+    pontoMedio[1] = medio[1];
+    pontoMedio[2] = medio[2];
 
     return pontoMedio;
 }
@@ -73,21 +71,18 @@ tnw::Vertice tnw::Model::getPontoMedio()
 tnw::Vertice tnw::Model::getPontoMedio(int i)
 {
     if(i < grupos.length()) {
-        double medio[3] = {0,0,0};
+        float medio[3] = {0,0,0};
+        int n = grupos[i].length();
         tnw::Vertice pontoMedioG;
 
         foreach (Vertice* v, grupos[i]) {
-            for (int i = 0; i < 3; ++i) {
-                medio[i] += (*v)[i];
+            for (int j = 0; j < 3; ++j) {
+                medio[j] += (*v)[j]/n;
             }
         }
-
-        for (int i = 0; i < 3; ++i) {
-            medio[i] /= grupos[i].length();
-        }
-        pontoMedioG.setX(medio[0]);
-        pontoMedioG.setY(medio[1]);
-        pontoMedioG.setZ(medio[2]);
+        pontoMedioG[0] = medio[0];
+        pontoMedioG[1] = medio[1];
+        pontoMedioG[2] = medio[2];
 
         return pontoMedioG;
     }
