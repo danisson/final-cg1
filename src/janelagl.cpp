@@ -1,30 +1,32 @@
 #include "janelagl.h"
-#include <iostream>
+#include <cstdio>
 #include "model.h"
 #include "transformmatrix.h"
+#include <QTimer>
 
-QVector3D aux;
+QVector3D pontoMedioMoinho;
 
 JanelaGL::JanelaGL(QWidget *parent) :
     QGLWidget(parent)
 {
+    QObject::connect(&timer,SIGNAL(timeout()),this,SLOT(update()));
 }
 
 void JanelaGL::initializeGL()
 {
+    glEnable(GL_DEPTH_TEST);
     glPolygonMode(GL_FRONT, GL_LINE);
     glPolygonMode(GL_BACK, GL_LINE);
 
-    modelos << tnw::Model("../modelos/Moinho.obj") ;//<< tnw::Model("../modelos/ico.obj") << tnw::Model("../modelos/ico.obj");
+    modelos << tnw::Model("../modelos/Moinho.obj") << tnw::Model("../modelos/Astronauta.obj");
 
-    modelos[0].aplicarTransformacao(tnw::translacao(-1.2,0,0));
-    modelos[0].aplicarTransformacao(tnw::escala(1.3,1.3,1.3));
-    modelos[0].aplicarTransformacao(tnw::rotacaoX(25)*tnw::rotacaoY(25));
-    aux = modelos[0].getPontoMedio(3);
+    modelos[0].aplicarTransformacao(tnw::translacao(-modelos[0].getPontoMedio()));
+    modelos[0].aplicarTransformacao(tnw::escala(1.4,1.4,1.4));
+    modelos[0].aplicarTransformacao(tnw::rotacaoX(20)*tnw::rotacaoY(-10));
+    pontoMedioMoinho = modelos[0].getPontoMedio(3);
 
-    //modelos[1].aplicarTransformacao(tnw::translacao(-0.6,0,0)*tnw::escala(0.1,0.1,0.1));
-
-    //modelos[2].aplicarTransformacao(tnw::translacao(0.6,0,0)*tnw::escala(0.2,0.2,0.2));
+    modelos[1].aplicarTransformacao(tnw::translacao(-0.1,0.3,0)*tnw::escala(0.1,0.1,0.1));
+    timer.start(60);
 }
 
 void JanelaGL::desenharModelos()
@@ -34,18 +36,30 @@ void JanelaGL::desenharModelos()
     }
 }
 
+void JanelaGL::desenharModelos(int i)
+{
+    modelos[i].desenhar();
+}
+
+void JanelaGL::update()
+{
+    modelos[0].aplicarTransformacao(tnw::translacao(pontoMedioMoinho)*tnw::rotacaoZ(10)*tnw::translacao(-pontoMedioMoinho),3);
+    modelos[1].aplicarTransformacao(tnw::rotacaoVetor(-10,QVector3D(1,3,0)));
+    this->repaint();
+}
+
 void desenharEixos(){
     glBegin(GL_LINES);
-    glColor3f(1.000000f, 0.000000f, 0.000000f);
-    glVertex3d(0, 0, 0);
-    glVertex3d(1, 0, 0);
-    glColor3f(0.000000f, 1.000000f, 0.000000f);
-    glVertex3d(0, 0, 0);
-    glVertex3d(0, 1, 0);
-    glColor3f(0.000000f, 0.000000f, 1.000000f);
-    glVertex3d(0, 0, 0);
-    glVertex3d(0, 0, 1);
-    glColor3f(1.0f, 1.0f, 1.0f);
+        glColor3f(1.000000f, 0.000000f, 0.000000f);
+        glVertex3d(0, 0, 0);
+        glVertex3d(1, 0, 0);
+        glColor3f(0.000000f, 1.000000f, 0.000000f);
+        glVertex3d(0, 0, 0);
+        glVertex3d(0, 1, 0);
+        glColor3f(0.000000f, 0.000000f, 1.000000f);
+        glVertex3d(0, 0, 0);
+        glVertex3d(0, 0, 1);
+        glColor3f(1.0f, 1.0f, 1.0f);
     glEnd();
 }
 
@@ -60,9 +74,9 @@ void JanelaGL::resizeGL(int w, int h)
 void JanelaGL::paintGL()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    //glOrtho(-1,1,-1,1,-1,1);
-    modelos[0].aplicarTransformacao(tnw::translacao(aux)*tnw::rotacaoZ(10)*tnw::translacao(-aux),3);
-    desenharModelos();
-
-    desenharEixos();
+    //desenharEixos();
+    glColor3f(1,1,1);
+    desenharModelos(0);
+    glColor3f(0,0,1);
+    desenharModelos(1);
 }

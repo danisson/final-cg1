@@ -185,6 +185,7 @@ tnw::Model::Model(QString pathname)
     pontoMedio.setY(medio[1]);
     pontoMedio.setZ(medio[2]);
 
+    std::cout << "Modelo carregado: " << pathname.toStdString() << std::endl;
     std::cout << "Quantidade de grupos: " << grupos.length() << std::endl;
     std::cout << "Ponto Médio: " << pontoMedio[0] << " , " << pontoMedio[1] << " , " << pontoMedio[2] << std::endl;
 }

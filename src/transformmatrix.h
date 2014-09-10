@@ -34,7 +34,7 @@ namespace tnw {
     };
 
     //Operador Matrix * QVector4D
-    QVector4D operator*(const TransformMatrix& right, const QVector4D& left);
+    QVector4D operator*(const TransformMatrix& esquerda, const QVector4D& direita);
 
     //Funções que retornam as matrizes de transformação
     TransformMatrix translacao(double x, double y, double z);
@@ -42,9 +42,7 @@ namespace tnw {
     TransformMatrix rotacaoX(double angGraus);
     TransformMatrix rotacaoY(double angGraus);
     TransformMatrix rotacaoZ(double angGraus);
-    TransformMatrix rotacaoVetor(double angGraus, double p1[3], double p2[3]);
-    TransformMatrix rotacaoVetor(double angGraus, QVector3D p1, QVector3D p2);
-    TransformMatrix rotacaoVetorOrigem(double angGraus, double a[3]);
+    TransformMatrix rotacaoVetor(double angGraus, QVector3D v);
     TransformMatrix escala(double x, double y, double z);
 
     //Função pra transformar graus em radianos
