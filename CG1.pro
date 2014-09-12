@@ -9,6 +9,7 @@ QT       += core gui opengl
 TARGET = CG1
 
 CONFIG += c++11
+CONFIG += static
 #CONFIG   += console
 CONFIG   -= app_bundle
 

@@ -2,6 +2,7 @@
 release*/
 debug*/
 build*/
+bin*/
 
 # Qt-es
 /.qmake.cache

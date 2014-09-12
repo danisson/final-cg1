@@ -4,7 +4,7 @@
 #include "transformmatrix.h"
 #include <QTimer>
 
-QVector3D pontoMedioMoinho;
+QVector3D pontoMedioMoinho,pontoMedioAstronauta;
 
 JanelaGL::JanelaGL(QWidget *parent) :
     QGLWidget(parent)
@@ -26,6 +26,7 @@ void JanelaGL::initializeGL()
     pontoMedioMoinho = modelos[0].getPontoMedio(3);
 
     modelos[1].aplicarTransformacao(tnw::translacao(-0.1,0.3,0)*tnw::escala(0.1,0.1,0.1));
+    pontoMedioAstronauta = modelos[1].getPontoMedio();
     timer.start(60);
 }
 
@@ -45,6 +46,8 @@ void JanelaGL::update()
 {
     modelos[0].aplicarTransformacao(tnw::translacao(pontoMedioMoinho)*tnw::rotacaoZ(10)*tnw::translacao(-pontoMedioMoinho),3);
     modelos[1].aplicarTransformacao(tnw::rotacaoVetor(-10,QVector3D(1,3,0)));
+    pontoMedioAstronauta = modelos[1].getPontoMedio();
+    modelos[1].aplicarTransformacao(tnw::translacao(pontoMedioAstronauta)*tnw::rotacaoZ(10)*tnw::translacao(-pontoMedioAstronauta));
     this->repaint();
 }
 

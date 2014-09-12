@@ -18,7 +18,7 @@ namespace tnw {
     typedef QList<Vertice*> Grupo;
 
 	/**
-	 *  Esta classe representa um modelo. TODO
+	 *  Esta classe representa um modelo.
 	 */
     class Model {
 	private:
