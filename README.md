@@ -1,6 +1,5 @@
 Trabalho Final de CG
 ====================
-uhuhuhuhu
 
 O README principal fica sempre na branch principal então as atualizações sempre serão nele.
 
