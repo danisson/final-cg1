@@ -1,6 +1,8 @@
 #ifndef TRANSFORMMATRIX_H
 #define TRANSFORMMATRIX_H
 
+#include <vector>
+#include <initializer_list>
 #include <QVector4D>
 #include <QVector3D>
 
@@ -9,7 +11,7 @@ namespace tnw {
     class TransformMatrix
     {
     private:
-        double** matrix;
+        std::vector<std::vector<double>> matrix;
     public:
         // Métodos
         void mostrar();
@@ -22,8 +24,8 @@ namespace tnw {
 
         // Construtores
         TransformMatrix(); // Identidade
+        TransformMatrix(std::initializer_list<std::initializer_list<double>> l); // Dado em tempo de compilação
         TransformMatrix(double a[4][4]); // Por um vetor
-        TransformMatrix(double** a); // Por um vetor dinâmico
         TransformMatrix(const TransformMatrix &obj); //Copiador
 
         // Desconstrutor

@@ -59,14 +59,23 @@ double tnw::TransformMatrix::operator()(unsigned i, unsigned j) const
 // Construtores
 tnw::TransformMatrix::TransformMatrix()
 {
-    this->matrix = new double*[4];
     for (int i = 0; i < 4; ++i) {
-        this->matrix[i] = new double[4];
+        this->matrix.resize(4);
+        this->matrix[i].resize(4);
         this->matrix[i][i] = 1;
         for (int j = 0; j < 4; ++j)
             if(j!=i)
                 this->matrix[i][j] = 0;
     }
+}
+
+tnw::TransformMatrix::TransformMatrix(std::initializer_list<std::initializer_list<double> > l)
+{
+    matrix.resize(4);
+    for (unsigned i = 0; i < l.size(); ++i) {
+        matrix[i] = std::vector<double>(*(l.begin()+i));
+    }
+
 }
 
 tnw::TransformMatrix::TransformMatrix(double a[4][4]) : tnw::TransformMatrix::TransformMatrix()
@@ -76,51 +85,18 @@ tnw::TransformMatrix::TransformMatrix(double a[4][4]) : tnw::TransformMatrix::Tr
             this->matrix[i][j] = a[i][j];
 }
 
-tnw::TransformMatrix::TransformMatrix(double** a) : tnw::TransformMatrix::TransformMatrix()
-{
-    for (int i = 0; i < 4; ++i)
-        for (int j = 0; j < 4; ++j)
-            this->matrix[i][j] = a[i][j];
-}
-
 tnw::TransformMatrix::TransformMatrix(const tnw::TransformMatrix &obj)
 {
-    this->matrix = new double*[4];
-    for (int i = 0; i < 4; ++i) {
-        this->matrix[i] = new double[4];
-        this->matrix[i][i] = 1;
-        for (int j = 0; j < 4; ++j)
-            if(j!=i)
-                this->matrix[i][j] = 0;
-    }
-    for (int i = 0; i < 4; ++i) {
-        for (int j = 0; j < 4; ++j) {
-            matrix[i][j] = obj.matrix[i][j];
-        }
-    }
+    this->matrix = std::vector<std::vector<double>>(obj.matrix);
 }
 
 // Destruidor
-tnw::TransformMatrix::~TransformMatrix()
-{
-    if(matrix!=nullptr) {
-        for (int i = 0; i < 4; ++i) {
-                delete[] matrix[i];
-        }
-        delete[] matrix;
-    }
-}
+tnw::TransformMatrix::~TransformMatrix(){}
 
 //Get and Setter
 
 void tnw::TransformMatrix::setMatrix(double a[4][4])
 {
-    if (matrix==nullptr){
-        this->matrix = new double*[4];
-        for (int i=0; i<4; ++i){
-            this->matrix[i] = new double[4];
-        }
-    }
     for (int i=0; i<4; ++i){
         for (int j=0; j<4; ++j){
             this->matrix[i][j] = a[i][j];
@@ -148,8 +124,8 @@ QVector4D tnw::operator*(const TransformMatrix &esquerda, const QVector4D &direi
 // Transformações Geométricas
 tnw::TransformMatrix tnw::translacao(double x,double y, double z)
 {
-    double m[4][4] = {{1,0,0,x},{0,1,0,y},{0,0,1,z},{0,0,0,1}};
-    return tnw::TransformMatrix(m);
+    tnw::TransformMatrix m = {{1,0,0,x},{0,1,0,y},{0,0,1,z},{0,0,0,1}};
+    return m;
 }
 
 tnw::TransformMatrix tnw::translacao(QVector3D v)
@@ -159,29 +135,29 @@ tnw::TransformMatrix tnw::translacao(QVector3D v)
 
 tnw::TransformMatrix tnw::escala(double x, double y, double z)
 {
-    double m[4][4] = {{x,0,0,0},{0,y,0,0},{0,0,z,0},{0,0,0,1}};
-    return tnw::TransformMatrix(m);
+    tnw::TransformMatrix m = {{x,0,0,0},{0,y,0,0},{0,0,z,0},{0,0,0,1}};
+    return m;
 }
 
 tnw::TransformMatrix tnw::rotacaoX(double angGraus)
 {
     double angRad = radianos(angGraus);
-    double m[4][4] = {{1,0,0,0},{0,cos(angRad),-sin(angRad),0},{0,sin(angRad),cos(angRad),0},{0,0,0,1}};
-    return tnw::TransformMatrix(m);
+    tnw::TransformMatrix m = {{1,0,0,0},{0,cos(angRad),-sin(angRad),0},{0,sin(angRad),cos(angRad),0},{0,0,0,1}};
+    return m;
 }
 
 tnw::TransformMatrix tnw::rotacaoY(double angGraus)
 {
     double angRad = tnw::radianos(angGraus);
-    double m[4][4] = {{cos(angRad),0,-sin(angRad),0},{0,1,0,0},{sin(angRad),0,cos(angRad),0},{0,0,0,1}};
-    return tnw::TransformMatrix(m);
+    tnw::TransformMatrix m = {{cos(angRad),0,-sin(angRad),0},{0,1,0,0},{sin(angRad),0,cos(angRad),0},{0,0,0,1}};
+    return m;
 }
 
 tnw::TransformMatrix tnw::rotacaoZ(double angGraus)
 {
     double angRad = tnw::radianos(angGraus);
-    double m[4][4] = {{cos(angRad),-sin(angRad),0,0},{sin(angRad),cos(angRad),0,0},{0,0,1,0},{0,0,0,1}};
-    return tnw::TransformMatrix(m);
+    tnw::TransformMatrix m = {{cos(angRad),-sin(angRad),0,0},{sin(angRad),cos(angRad),0,0},{0,0,1,0},{0,0,0,1}};
+    return m;
 }
 
 tnw::TransformMatrix tnw::rotacaoVetor(double angGraus, QVector3D v)
@@ -192,7 +168,7 @@ tnw::TransformMatrix tnw::rotacaoVetor(double angGraus, QVector3D v)
     double barCos  = 1 - coss;
     v = v.normalized();
     double x = v[0],y = v[1], z = v[2];
-    double m[4][4] =
+    tnw::TransformMatrix m =
     {
         { coss+x*x*barCos ,x*y*barCos-z*seno,x*z*barCos+y*seno,0},
         {y*x*barCos+z*seno, coss+y*y*barCos ,y*z*barCos-x*seno,0},
@@ -200,7 +176,7 @@ tnw::TransformMatrix tnw::rotacaoVetor(double angGraus, QVector3D v)
         {       0         ,        0        ,        0        ,1}
     };
 
-    return tnw::TransformMatrix(m);
+    return m;
 }
 
 double tnw::radianos(double graus){
