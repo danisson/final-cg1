@@ -22,7 +22,7 @@ void JanelaGL::initializeGL()
 
     modelos[0].aplicarTransformacao(tnw::translacao(-modelos[0].getPontoMedio()));
     modelos[0].aplicarTransformacao(tnw::escala(1.4,1.4,1.4));
-    modelos[0].aplicarTransformacao(tnw::rotacaoX(20)*tnw::rotacaoY(-10));
+    //modelos[0].aplicarTransformacao(tnw::rotacaoX(20)*tnw::rotacaoY(-10));
     pontoMedioMoinho = modelos[0].getPontoMedio(3);
 
     modelos[1].aplicarTransformacao(tnw::translacao(-0.1,0.3,0)*tnw::escala(0.1,0.1,0.1));
@@ -33,13 +33,13 @@ void JanelaGL::initializeGL()
 void JanelaGL::desenharModelos()
 {
     foreach (tnw::Model m, modelos) {
-        m.desenhar();
+        m.desenhar(projection);
     }
 }
 
 void JanelaGL::desenharModelos(int i)
 {
-    modelos[i].desenhar();
+    modelos[i].desenhar(projection);
 }
 
 void JanelaGL::update()
@@ -77,7 +77,7 @@ void JanelaGL::resizeGL(int w, int h)
 void JanelaGL::paintGL()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    //desenharEixos();
+    desenharEixos();
     glColor3f(1,1,1);
     desenharModelos(0);
     glColor3f(0,0,1);

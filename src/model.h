@@ -29,6 +29,7 @@ namespace tnw {
 	public:
         //Métodos
         void desenhar();
+        void desenhar(TransformMatrix m);
         void aplicarTransformacao(TransformMatrix m); // Aplica a transformação no modelo inteiro
         void aplicarTransformacao(TransformMatrix m,int i); // Aplica a transformação no i-ésimo grupo do modelo.
         // Get and Setters

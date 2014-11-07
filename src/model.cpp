@@ -18,6 +18,21 @@ void tnw::Model::desenhar()
     glEnd();
 }
 
+void tnw::Model::desenhar(tnw::TransformMatrix m)
+{
+    QVector4D aux;
+    glBegin(GL_TRIANGLES);
+    foreach (tnw::Face f, this->faces) {
+        aux = m*(*std::get<0>(f));
+        glVertex3d(aux.x(),aux.y(),aux.z());
+        aux = m*(*std::get<1>(f));
+        glVertex3d(aux.x(),aux.y(),aux.z());
+        aux = m*(*std::get<2>(f));
+        glVertex3d(aux.x(),aux.y(),aux.z());
+    }
+    glEnd();
+}
+
 void tnw::Model::aplicarTransformacao(TransformMatrix m)
 {
     QMutableListIterator<tnw::Vertice> iter(vertices);
