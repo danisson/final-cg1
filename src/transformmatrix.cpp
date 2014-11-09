@@ -182,3 +182,40 @@ tnw::TransformMatrix tnw::rotacaoVetor(double angGraus, QVector3D v)
 double tnw::radianos(double graus){
     return (M_PI*graus)/180;
 }
+
+tnw::TransformMatrix tnw::ortho(double left, double right, double bottom, double top, double near, double far)
+{
+    tnw::TransformMatrix m = {
+        {2/(right-left),     0        ,     0       ,-(left+right)/(right-left)},
+        {       0      ,2/(top-bottom),     0       ,-(top+bottom)/(top-bottom)},
+        {       0      ,     0        ,-2/(far-near),  -(far+near)/(far-near)  },
+        {       0      ,     0        ,     0       ,             1            }
+    };
+    return m;
+}
+
+tnw::TransformMatrix tnw::frustum(double left, double right, double bottom, double top, double near, double far)
+{
+    tnw::TransformMatrix m = {
+        {(2*near)/(right-left),          0          ,(right+left)/(right-left),          0             },
+        {        0            ,(2*near)/(top-bottom),(top+bottom)/(top-bottom),          0             },
+        {        0            ,          0          ,  -(far+near)/(far-near) ,(-2*far*near)/(far-near)},
+        {        0            ,          0          ,             -1          ,          0             }
+    };
+    return m;
+}
+
+tnw::TransformMatrix tnw::isometric(bool positive_hor, bool positive_ver)
+{
+    double rot_y = 45.0;
+    double rot_x = 35.264;
+    if (!positive_ver){
+        rot_y = -rot_y;
+    }
+    if (!positive_hor){
+        rot_x = -rot_x;
+    }
+    tnw::TransformMatrix a = tnw::rotacaoY(rot_y);
+    tnw::TransformMatrix b = tnw::rotacaoX(rot_x);
+    return b*a;
+}

@@ -50,5 +50,10 @@ namespace tnw {
     //Função pra transformar graus em radianos
     double radianos(double graus);
 
+    //Funções que retornam as matrizes de projeção
+    TransformMatrix ortho(double left, double right, double bottom, double top, double near, double far);
+    TransformMatrix frustum(double left, double right, double bottom, double top, double near, double far);
+    TransformMatrix isometric(bool positive_hor, bool positive_ver);
+
 }
 #endif // TRANSFORMMATRIX_H
