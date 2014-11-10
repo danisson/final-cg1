@@ -27,7 +27,7 @@ void JanelaGL::initializeGL()
 
     //projection = tnw::ortho(-2.0,2.0,-2.0,2.0,-2.0,2.0);
     //projection = tnw::frustum(-2.0, 2.0, -2.0, 2.0, 5.0, -5.0);
-    //projection = tnw::isometric(true,false);
+    //projection = tnw::isometric(0.5,-1.0,1.0,true,true);
 
     modelos[1].aplicarTransformacao(tnw::translacao(-0.1,0.3,0)*tnw::escala(0.1,0.1,0.1));
     pontoMedioAstronauta = modelos[1].getPontoMedio();

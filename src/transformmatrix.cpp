@@ -205,10 +205,10 @@ tnw::TransformMatrix tnw::frustum(double left, double right, double bottom, doub
     return m;
 }
 
-tnw::TransformMatrix tnw::isometric(bool positive_hor, bool positive_ver)
+tnw::TransformMatrix tnw::isometric(double scale, double near, double far,bool positive_hor, bool positive_ver)
 {
     double rot_y = 45.0;
-    double rot_x = 35.264;
+    double rot_x = std::asin(std::tan(tnw::radianos(30))) * 180.0 / M_PI;
     if (!positive_ver){
         rot_y = -rot_y;
     }
@@ -217,5 +217,5 @@ tnw::TransformMatrix tnw::isometric(bool positive_hor, bool positive_ver)
     }
     tnw::TransformMatrix a = tnw::rotacaoY(rot_y);
     tnw::TransformMatrix b = tnw::rotacaoX(rot_x);
-    return b*a;
+    return tnw::ortho(-scale,scale,-scale,scale,near,far)*b*a;
 }
