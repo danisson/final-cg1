@@ -39,6 +39,7 @@ namespace tnw {
     //Funções que retornam as matrizes de transformação
     TransformMatrix translacao(double x, double y, double z);
     TransformMatrix translacao(QVector3D v);
+    TransformMatrix translacao(QVector4D v);
     TransformMatrix rotacaoX(double angGraus);
     TransformMatrix rotacaoY(double angGraus);
     TransformMatrix rotacaoZ(double angGraus);

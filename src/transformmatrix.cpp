@@ -157,6 +157,12 @@ tnw::TransformMatrix tnw::translacao(QVector3D v)
     return tnw::translacao(v[0],v[1],v[2]);
 }
 
+tnw::TransformMatrix tnw::translacao(QVector4D v)
+{
+    return tnw::translacao(v.toVector3D());
+}
+
+
 tnw::TransformMatrix tnw::escala(double x, double y, double z)
 {
     double m[4][4] = {{x,0,0,0},{0,y,0,0},{0,0,z,0},{0,0,0,1}};

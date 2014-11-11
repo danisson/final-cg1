@@ -8,11 +8,11 @@
 
 namespace tnw {
 
-	/** Uma face é simplesmente uma tripla de Vertices. */
-    typedef std::tuple<QVector3D*,QVector3D*,QVector3D*> Face;
-
 	/** Um vertice tem a mesma representação que um QVector3D. */
-	typedef QVector3D Vertice;
+    typedef QVector4D Vertice;
+
+    /** Uma face é simplesmente uma tripla de Vertices. */
+    typedef std::tuple<Vertice*,Vertice*,Vertice*,Vertice*,Vertice*,Vertice*> Face;
 
     /* Um grupo de vértices é uma lista de vértices */
     typedef QList<Vertice*> Grupo;
@@ -23,9 +23,10 @@ namespace tnw {
     class Model {
 	private:
         QList<Vertice> vertices; // A lista de vertices normalzados do modelo.
-        QList<Face> faces; // A lista de faces do modelo.
-        QList<Grupo> grupos; // A lista de grupos
-        Vertice pontoMedio; // Ponto médio do objeto, pode estar desatualizado
+        QList<Vertice> normais; // A lista de normais normalizados.
+        QList<Face> faces;     // A lista de faces do modelo.
+        QList<Grupo> grupos;  // A lista de grupos
+        Vertice pontoMedio;  // Ponto médio do objeto, pode estar desatualizado
 	public:
         //Métodos
         void desenhar();

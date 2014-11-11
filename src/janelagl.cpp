@@ -4,7 +4,7 @@
 #include "transformmatrix.h"
 #include <QTimer>
 
-QVector3D pontoMedioMoinho,pontoMedioAstronauta;
+tnw::Vertice pontoMedioMoinho,pontoMedioAstronauta;
 
 JanelaGL::JanelaGL(QWidget *parent) :
     QGLWidget(parent)
@@ -32,9 +32,8 @@ void JanelaGL::initializeGL()
 
 void JanelaGL::desenharModelos()
 {
-    foreach (tnw::Model m, modelos) {
+    foreach (tnw::Model m, modelos)
         m.desenhar();
-    }
 }
 
 void JanelaGL::desenharModelos(int i)

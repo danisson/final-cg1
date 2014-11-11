@@ -23,7 +23,7 @@ void tnw::Model::aplicarTransformacao(TransformMatrix m)
     QMutableListIterator<tnw::Vertice> iter(vertices);
     while (iter.hasNext()) {
         tnw::Vertice v = iter.next();
-        iter.setValue((m*QVector4D(v,1)).toVector3D());
+        iter.setValue(m*v);
     }
 }
 
@@ -33,7 +33,7 @@ void tnw::Model::aplicarTransformacao(tnw::TransformMatrix m, int i)
         QMutableListIterator<tnw::Vertice*> iter(grupos[i]);
         while (iter.hasNext()) {
             tnw::Vertice* v = iter.next();
-            *v = ((m*QVector4D(*v,1)).toVector3D());
+            *v = (m*(*v));
         }
     }
     else
@@ -52,7 +52,7 @@ QList<tnw::Face> tnw::Model::getFaces()
 
 tnw::Vertice tnw::Model::getPontoMedio()
 {
-    double medio[3] = {0,0,0};
+    double medio[4] = {0,0,0,1};
     int n = vertices.length();
 
     foreach (Vertice v, vertices) {
@@ -64,6 +64,7 @@ tnw::Vertice tnw::Model::getPontoMedio()
     pontoMedio[0] = medio[0];
     pontoMedio[1] = medio[1];
     pontoMedio[2] = medio[2];
+    pontoMedio[3] = medio[3];
 
     return pontoMedio;
 }
@@ -71,18 +72,22 @@ tnw::Vertice tnw::Model::getPontoMedio()
 tnw::Vertice tnw::Model::getPontoMedio(int i)
 {
     if(i < grupos.length()) {
-        float medio[3] = {0,0,0};
-        int n = grupos[i].length();
+        float medio[4] = {0,0,0,1};
+        int n = 0;
         tnw::Vertice pontoMedioG;
 
-        foreach (Vertice* v, grupos[i]) {
-            for (int j = 0; j < 3; ++j) {
-                medio[j] += (*v)[j]/n;
-            }
-        }
+        foreach (Vertice* v, grupos[i])
+            if((*v)[3]==1) n++;
+
+        foreach (Vertice* v, grupos[i])
+            if((*v)[3]==1)
+                for (int j = 0; j < 3; ++j)
+                    medio[j] += (*v)[j]/n;
+
         pontoMedioG[0] = medio[0];
         pontoMedioG[1] = medio[1];
         pontoMedioG[2] = medio[2];
+        pontoMedioG[3] = medio[3];
 
         return pontoMedioG;
     }
@@ -104,7 +109,7 @@ tnw::Model::Model(QString pathname)
     QStringList parseada;
     QStringList verticesDaFace;
     int* vtx = new int[3];
-    int* txt = new int[3];
+    //int* txt = new int[3];
     int* nrm = new int[3];
     QRegExp regularExpression("([\\S]*)([\\s]*)([\\S]*[\\s]*)([\\S]*[\\s]*)([\\S]*[\\s]*)");
 
@@ -122,9 +127,14 @@ tnw::Model::Model(QString pathname)
             regularExpression.indexIn(linha);
             parseada = regularExpression.capturedTexts();
             if(parseada[1] == "v") {
-                vertices << QVector3D(parseada[3].toFloat(),parseada[4].toFloat(),parseada[5].toFloat());
+                vertices << tnw::Vertice(parseada[3].toFloat(),parseada[4].toFloat(),parseada[5].toFloat(),1);
                 if(grupos.length() > 0)
                     grupos.last() << &vertices.last();
+            }
+            if(parseada[1] == "vn") {
+                normais << tnw::Vertice(parseada[3].toFloat(),parseada[4].toFloat(),parseada[5].toFloat(),0);
+                if(grupos.length() > 0)
+                    grupos.last() << &normais.last();
             }
             break;
         case 'f': // Se for uma face...
@@ -134,21 +144,25 @@ tnw::Model::Model(QString pathname)
                 verticesDaFace = parseada[i].split("/",QString::KeepEmptyParts);
                 if(!verticesDaFace[0].isEmpty())
                     vtx[i-3] = verticesDaFace[0].toInt()-1;
-                if(verticesDaFace.size() > 1&&!verticesDaFace[1].isEmpty())
-                    txt[i-3] = verticesDaFace[0].toInt()-1;
-                if(verticesDaFace.size() > 2&&!verticesDaFace[2].isEmpty())
-                    nrm[i-3] = verticesDaFace[0].toInt()-1;
+                if(verticesDaFace.size() > 2 && !verticesDaFace[2].isEmpty())
+                    nrm[i-3] = verticesDaFace[2].toInt()-1;
+                else
+                    nrm[i-3] = -1;
             }
+
             faces << tnw::Face(&(vertices[vtx[0]]),
                                &(vertices[vtx[1]]),
-                               &(vertices[vtx[2]]));
+                               &(vertices[vtx[2]]),
+                               &(normais[nrm[0]]),
+                               &(normais[nrm[1]]),
+                               &(normais[nrm[2]]));
             break;
         default:
             break;
         }
     }
     delete[] vtx;
-    delete[] txt;
+    //delete[] txt;
     delete[] nrm;
 
     float max[4]={0,0,0,0};
@@ -166,7 +180,7 @@ tnw::Model::Model(QString pathname)
     QMutableListIterator<tnw::Vertice> iter(vertices);
     while (iter.hasNext()) {
         tnw::Vertice v = iter.next();
-        iter.setValue(tnw::Vertice(v.x()/max[3],v.y()/max[3],v.z()/max[3]));
+        iter.setValue(tnw::Vertice(v.x()/max[3],v.y()/max[3],v.z()/max[3],1));
     }
 
     double medio[3] = {0,0,0};
@@ -184,6 +198,7 @@ tnw::Model::Model(QString pathname)
     pontoMedio.setX(medio[0]);
     pontoMedio.setY(medio[1]);
     pontoMedio.setZ(medio[2]);
+    pontoMedio.setW(1);
 
     std::cout << "Modelo carregado: " << pathname.toStdString() << std::endl;
     std::cout << "Quantidade de grupos: " << grupos.length() << std::endl;
