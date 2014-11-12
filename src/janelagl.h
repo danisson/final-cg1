@@ -5,6 +5,7 @@
 #include <QList>
 #include <QTimer>
 #include "model.h"
+#include "transformmatrix.h"
 
 class JanelaGL : public QGLWidget
 {
@@ -15,6 +16,7 @@ public:
 protected:
     QList<tnw::Model> modelos;
     QTimer timer;
+    tnw::TransformMatrix projection;
 
     void initializeGL();
     void resizeGL(int w, int h);
