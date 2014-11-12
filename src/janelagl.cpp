@@ -15,8 +15,9 @@ JanelaGL::JanelaGL(QWidget *parent) :
 void JanelaGL::initializeGL()
 {
     glEnable(GL_DEPTH_TEST);
-    glPolygonMode(GL_FRONT, GL_LINE);
-    glPolygonMode(GL_BACK, GL_LINE);
+    glDepthRange(1,-1);
+    //glPolygonMode(GL_FRONT, GL_LINE);
+    //glPolygonMode(GL_BACK, GL_LINE);
 
     modelos << tnw::Model("../modelos/MoinhoCor.obj") << tnw::Model("../modelos/Astronauta.obj");
 

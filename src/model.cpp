@@ -9,6 +9,8 @@
 #include <QRegExp>
 #include <GL/gl.h>
 
+using std::get;
+
 void tnw::Model::desenhar()
 {
     glBegin(GL_TRIANGLES);
@@ -18,9 +20,11 @@ void tnw::Model::desenhar()
         std::get<5>(f)->normalize();
 
         // Passando os vértices pro OpenGL
-        glVertex3d((std::get<0>(f))->x(),(std::get<0>(f))->y(),(std::get<0>(f))->z());
-        glVertex3d((std::get<1>(f))->x(),(std::get<1>(f))->y(),(std::get<1>(f))->z());
-        glVertex3d((std::get<2>(f))->x(),(std::get<2>(f))->y(),(std::get<2>(f))->z());
+        if(get<6>(f) != nullptr)
+            glColor3fv(get<6>(f)->toColor());
+        glVertex3d((get<0>(f))->x(),(get<0>(f))->y(),(get<0>(f))->z());
+        glVertex3d((get<1>(f))->x(),(get<1>(f))->y(),(get<1>(f))->z());
+        glVertex3d((get<2>(f))->x(),(get<2>(f))->y(),(get<2>(f))->z());
     }
     glEnd();
 }
@@ -177,7 +181,7 @@ tnw::Model::Model(QString pathname)
     int* vtx = new int[3];
     //int* txt = new int[3];
     int* nrm = new int[3];
-    tnw::ColorMatrix corAtual;
+    tnw::ColorMatrix* corAtual= nullptr;
 
     QRegExp regularExpression("([\\S]*)([\\s]*)([\\S]*[\\s]*)([\\S]*[\\s]*)([\\S]*[\\s]*)");
 
@@ -216,7 +220,7 @@ tnw::Model::Model(QString pathname)
             parseada = regularExpression.capturedTexts();
             if(parseada[1] == "usemtl") {
                 std::cout << "Usando " << parseada[3].trimmed().toStdString() << std::endl;
-                corAtual = paleta.value(parseada[3].trimmed());
+                corAtual = &paleta[parseada[3].trimmed()];
             }
             break;
         case 'f': // Se for uma face...
@@ -237,7 +241,8 @@ tnw::Model::Model(QString pathname)
                                &(vertices[vtx[2]]),
                                &(normais[nrm[0]]),
                                &(normais[nrm[1]]),
-                               &(normais[nrm[2]]));
+                               &(normais[nrm[2]]),
+                                 corAtual);
             break;
         default:
             break;

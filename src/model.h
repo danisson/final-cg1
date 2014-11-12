@@ -14,7 +14,10 @@ namespace tnw {
     typedef QVector4D Vertice;
 
     /** Uma face é simplesmente uma tripla de Vertices. */
-    typedef std::tuple<Vertice*,Vertice*,Vertice*,Vertice*,Vertice*,Vertice*> Face;
+    typedef std::tuple<Vertice*,Vertice*,Vertice*,
+                       Vertice*,Vertice*,Vertice*,
+                       tnw::ColorMatrix*
+                      >Face;
 
     /* Um grupo de vértices é uma lista de vértices */
     typedef QList<Vertice*> Grupo;

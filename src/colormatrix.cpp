@@ -95,6 +95,14 @@ void tnw::ColorMatrix::setKs(float a, float b, float c)
     m[2][2] = c;
 }
 
+float *tnw::ColorMatrix::toColor()
+{
+    float* r = new float[3];
+    for (int i = 0; i < 3; ++i)
+        r[i] = (getKd(i)+getKa(i)+getKs(i))/3;
+    return r;
+}
+
 tnw::ColorMatrix::ColorMatrix() {
     for (int i = 0; i < 3; ++i)
         for (int j = 0; j < 3; ++j)

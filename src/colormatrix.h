@@ -24,6 +24,8 @@ namespace tnw  {
         float  getKs(unsigned i) const;
         void   setKs(float a, float b, float c);
 
+        float* toColor();
+
         ColorMatrix(); // Construtor
         ColorMatrix(const ColorMatrix& m); // Copiador
     };
