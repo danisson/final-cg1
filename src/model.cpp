@@ -1,5 +1,7 @@
 #include "model.h"
 #include <QFile>
+#include <QFileInfo>
+#include <QDir>
 #include <cstdio>
 #include <iostream>
 #include <QStringList>
@@ -55,6 +57,11 @@ QList<tnw::Face> tnw::Model::getFaces()
     return this->faces;
 }
 
+QHash<QString, tnw::ColorMatrix> tnw::Model::getPaleta()
+{
+    return paleta;
+}
+
 tnw::Vertice tnw::Model::getPontoMedio()
 {
     double medio[4] = {0,0,0,1};
@@ -100,6 +107,55 @@ tnw::Vertice tnw::Model::getPontoMedio(int i)
         throw std::out_of_range("Grupo não existente");
 }
 
+QHash<QString,tnw::ColorMatrix> lerMateriais(QString path) {
+    QFile arquivo(path);
+    if(!arquivo.open(QIODevice::ReadOnly)) {
+        printf("E: %s\n",arquivo.errorString().toStdString().c_str());
+        throw -1;
+    }
+
+    QHash<QString,tnw::ColorMatrix> paletaDeCores;
+    QString chave;
+    tnw::ColorMatrix cores;
+
+    QString linha;
+    QStringList parseada;
+
+    bool lendoMaterial = false;
+
+    QRegExp regularNome("([\\S]*)([\\s]*)([\\S]*)([\\s]*)");
+    QRegExp regularKvalue("([\\S]*)([\\s]*)([\\S]*[\\s]*)([\\S]*[\\s]*)([\\S]*[\\s]*)");
+
+    while(!arquivo.atEnd()) {
+        linha = arquivo.readLine();
+        switch (linha[0].toLatin1()) {
+            case '#': // É um comentário
+                break;
+            case 'n': // Nome de um material
+                if(lendoMaterial){ paletaDeCores.insert(chave,cores);printf("Adicionado %s!\n",chave.toStdString().c_str());}
+                lendoMaterial = true;
+                regularNome.indexIn(linha);
+                parseada = regularNome.capturedTexts();
+                chave = parseada[3];
+                break;
+            case 'K': // É um valor de cor
+                regularKvalue.indexIn(linha);
+                parseada = regularKvalue.capturedTexts();
+                if(parseada[1] == "Ka")
+                    cores.setKa(parseada[3].toFloat(),parseada[4].toFloat(),parseada[5].toFloat());
+                if(parseada[1] == "Kd")
+                    cores.setKd(parseada[3].toFloat(),parseada[4].toFloat(),parseada[5].toFloat());
+                if(parseada[1] == "Ks")
+                    cores.setKs(parseada[3].toFloat(),parseada[4].toFloat(),parseada[5].toFloat());
+                break;
+        }
+    }
+    if(lendoMaterial){ paletaDeCores.insert(chave,cores);printf("Adicionado %s!\n",chave.toStdString().c_str());}
+
+    return paletaDeCores;
+}
+
+
 tnw::Model::Model(QString pathname)
 {
     if(pathname.isEmpty())
@@ -107,15 +163,22 @@ tnw::Model::Model(QString pathname)
     // Se tudo estiver certo..
     QFile arquivo(pathname);
     // Vamos tentar abrir o arquivo
-    if(!arquivo.open(QIODevice::ReadOnly))
+    if(!arquivo.open(QIODevice::ReadOnly)) {
+        std::cerr << arquivo.errorString().toStdString() << std::endl;
         throw -1;
+    }
+    std::cout << "Modelo carregado: " << pathname.toStdString() << std::endl;
 
+    QFileInfo info(arquivo);
     QString linha;
     QStringList parseada;
     QStringList verticesDaFace;
+
     int* vtx = new int[3];
     //int* txt = new int[3];
     int* nrm = new int[3];
+    tnw::ColorMatrix corAtual;
+
     QRegExp regularExpression("([\\S]*)([\\s]*)([\\S]*[\\s]*)([\\S]*[\\s]*)([\\S]*[\\s]*)");
 
     while(!arquivo.atEnd())
@@ -124,6 +187,12 @@ tnw::Model::Model(QString pathname)
         switch (linha[0].toLatin1()) {
         case '#':
             // É um comentário
+            break;
+        case 'm': // Se é o link de um material
+            regularExpression.indexIn(linha);
+            parseada = regularExpression.capturedTexts();
+            if(parseada[1] == "mtllib")
+                paleta = lerMateriais((info.dir().absolutePath() + "/" + parseada[3]).trimmed());
             break;
         case 'g': // Se for um grupo.
             grupos << tnw::Grupo(); // Adiciona um novo grupo
@@ -140,6 +209,14 @@ tnw::Model::Model(QString pathname)
                 normais << tnw::Vertice(parseada[3].toFloat(),parseada[4].toFloat(),parseada[5].toFloat(),0);
                 if(grupos.length() > 0)
                     grupos.last() << &normais.last();
+            }
+            break;
+        case 'u': // Se é uma instrução para usar uma cor
+            regularExpression.indexIn(linha);
+            parseada = regularExpression.capturedTexts();
+            if(parseada[1] == "usemtl") {
+                std::cout << "Usando " << parseada[3].trimmed().toStdString() << std::endl;
+                corAtual = paleta.value(parseada[3].trimmed());
             }
             break;
         case 'f': // Se for uma face...
@@ -169,6 +246,8 @@ tnw::Model::Model(QString pathname)
     delete[] vtx;
     //delete[] txt;
     delete[] nrm;
+
+    std::cout << "Quantidade de grupos: " << grupos.length() << std::endl;
 
     float max[4]={0,0,0,0};
     foreach (tnw::Vertice v, vertices) {
@@ -205,8 +284,6 @@ tnw::Model::Model(QString pathname)
     pontoMedio.setZ(medio[2]);
     pontoMedio.setW(1);
 
-    std::cout << "Modelo carregado: " << pathname.toStdString() << std::endl;
-    std::cout << "Quantidade de grupos: " << grupos.length() << std::endl;
     std::cout << "Ponto Médio: " << pontoMedio[0] << " , " << pontoMedio[1] << " , " << pontoMedio[2] << std::endl;
 }
 

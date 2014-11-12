@@ -18,7 +18,7 @@ void JanelaGL::initializeGL()
     glPolygonMode(GL_FRONT, GL_LINE);
     glPolygonMode(GL_BACK, GL_LINE);
 
-    modelos << tnw::Model("../modelos/Moinho.obj") << tnw::Model("../modelos/Astronauta.obj");
+    modelos << tnw::Model("../modelos/MoinhoCor.obj") << tnw::Model("../modelos/Astronauta.obj");
 
     modelos[0].aplicarTransformacao(tnw::translacao(-modelos[0].getPontoMedio()));
     modelos[0].aplicarTransformacao(tnw::escala(1.4,1.4,1.4));

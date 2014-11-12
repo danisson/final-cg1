@@ -53,12 +53,6 @@ void tnw::ColorMatrix::setKd(float a, float b, float c)
     m[0][2] = c;
 }
 
-tnw::ColorMatrix::ColorMatrix() {
-    for (int i = 0; i < 3; ++i)
-        for (int j = 0; j < 3; ++j)
-            m[i][j]=0;
-}
-
 float &tnw::ColorMatrix::getKa(unsigned i)
 {
     if(i<3)
@@ -78,6 +72,27 @@ void tnw::ColorMatrix::setKa(float a, float b, float c)
     m[1][0] = a;
     m[1][1] = b;
     m[1][2] = c;
+}
+
+float &tnw::ColorMatrix::getKs(unsigned i)
+{
+    if(i<3)
+        return m[2][i];
+    throw std::invalid_argument("Indice fora da matrix");
+}
+
+float tnw::ColorMatrix::getKs(unsigned i) const
+{
+    if(i<3)
+        return m[2][i];
+    throw std::invalid_argument("Indice fora da matrix");
+}
+
+void tnw::ColorMatrix::setKs(float a, float b, float c)
+{
+    m[2][0] = a;
+    m[2][1] = b;
+    m[2][2] = c;
 }
 
 tnw::ColorMatrix::ColorMatrix() {

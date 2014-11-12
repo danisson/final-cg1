@@ -1,10 +1,12 @@
 #ifndef TNW_MODEL_H
 #define TNW_MODEL_H
 #include <QList>
+#include <QHash>
 #include <QVector3D>
 #include <QVector4D>
 #include <tuple>
 #include "transformmatrix.h"
+#include "colormatrix.h"
 
 namespace tnw {
 
@@ -27,6 +29,7 @@ namespace tnw {
         QList<Face> faces;     // A lista de faces do modelo.
         QList<Grupo> grupos;  // A lista de grupos
         Vertice pontoMedio;  // Ponto médio do objeto, pode estar desatualizado
+        QHash<QString,tnw::ColorMatrix> paleta; // Paleta de cores do modelo
 	public:
         //Métodos
         void desenhar();
@@ -35,6 +38,7 @@ namespace tnw {
         // Get and Setters
         QList<Vertice> getVertices();
         QList<Face> getFaces();
+        QHash<QString,tnw::ColorMatrix> getPaleta();
         Vertice getPontoMedio(); // Retorna e atualiza o ponto médio
         Vertice getPontoMedio(int i); // Retorna o ponto médio do i-ésimo grupo
         // Construtores
