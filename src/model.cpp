@@ -11,6 +11,11 @@ void tnw::Model::desenhar()
 {
     glBegin(GL_TRIANGLES);
     foreach (tnw::Face f, this->faces) {
+        std::get<3>(f)->normalize();
+        std::get<4>(f)->normalize();
+        std::get<5>(f)->normalize();
+
+        // Passando os vértices pro OpenGL
         glVertex3d((std::get<0>(f))->x(),(std::get<0>(f))->y(),(std::get<0>(f))->z());
         glVertex3d((std::get<1>(f))->x(),(std::get<1>(f))->y(),(std::get<1>(f))->z());
         glVertex3d((std::get<2>(f))->x(),(std::get<2>(f))->y(),(std::get<2>(f))->z());
