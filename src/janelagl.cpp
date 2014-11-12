@@ -22,12 +22,13 @@ void JanelaGL::initializeGL()
 
     modelos[0].aplicarTransformacao(tnw::translacao(-modelos[0].getPontoMedio()));
     modelos[0].aplicarTransformacao(tnw::escala(1.4,1.4,1.4));
-    //modelos[0].aplicarTransformacao(tnw::rotacaoX(20)*tnw::rotacaoY(-10));
+    modelos[0].aplicarTransformacao(tnw::rotacaoX(20)*tnw::rotacaoY(-10));
     pontoMedioMoinho = modelos[0].getPontoMedio(3);
 
     //projection = tnw::ortho(-2.0,2.0,-2.0,2.0,-2.0,2.0);
-    //projection = tnw::frustum(-2.0, 2.0, -2.0, 2.0, 5.0, -5.0);
+    //projection = tnw::frustum(-0.5, 0.5, -0.5, 0.5, 0.7, 3)*tnw::translacao(QVector3D(0,0,-1));
     //projection = tnw::isometric(0.5,-1.0,1.0,true,true);
+    projection = tnw::perspective(90,1,0.7,3)*tnw::translacao(QVector3D(0,0,-1));
 
     modelos[1].aplicarTransformacao(tnw::translacao(-0.1,0.3,0)*tnw::escala(0.1,0.1,0.1));
     pontoMedioAstronauta = modelos[1].getPontoMedio();

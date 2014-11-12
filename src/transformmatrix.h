@@ -53,6 +53,7 @@ namespace tnw {
     //Funções que retornam as matrizes de projeção
     TransformMatrix ortho(double left, double right, double bottom, double top, double near, double far);
     TransformMatrix frustum(double left, double right, double bottom, double top, double near, double far);
+    TransformMatrix perspective(double fovy, double aspect, double near, double far);
     TransformMatrix isometric(double scale,double near, double far,bool positive_hor, bool positive_ver);
 
 }
