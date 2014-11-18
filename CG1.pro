@@ -22,14 +22,16 @@ SOURCES += \
     src/transformmatrix.cpp \
     src/janelaprincipal.cpp \
     src/janelagl.cpp \
-    src/colormatrix.cpp
+    src/colormatrix.cpp \
+    src/light.cpp
 
 HEADERS += \
     src/model.h \
     src/transformmatrix.h \
     src/janelaprincipal.h \
     src/janelagl.h \
-    src/colormatrix.h
+    src/colormatrix.h \
+    src/light.h
 
 FORMS += \
     src/janelaprincipal.ui

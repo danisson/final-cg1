@@ -35,8 +35,8 @@ namespace tnw {
         QHash<QString,tnw::ColorMatrix> paleta; // Paleta de cores do modelo
 	public:
         //Métodos
-        void desenhar();
-        void desenhar(TransformMatrix m);
+        void desenhar(float ambiente[3],QList<tnw::Light> luzes);
+        void desenhar(TransformMatrix m,float ambiente[3],QList<tnw::Light> luzes);
         void aplicarTransformacao(TransformMatrix m); // Aplica a transformação no modelo inteiro
         void aplicarTransformacao(TransformMatrix m,int i); // Aplica a transformação no i-ésimo grupo do modelo.
         // Get and Setters

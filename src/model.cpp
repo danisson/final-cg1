@@ -1,6 +1,7 @@
 #include "model.h"
 #include <QFile>
 #include <QFileInfo>
+#include <QTextStream>
 #include <QDir>
 #include <cstdio>
 #include <iostream>
@@ -11,39 +12,46 @@
 
 using std::get;
 
-void tnw::Model::desenhar()
+void tnw::Model::desenhar(float ambiente[3],QList<tnw::Light> luzes)
 {
     glBegin(GL_TRIANGLES);
     foreach (tnw::Face f, this->faces) {
-        std::get<3>(f)->normalize();
-        std::get<4>(f)->normalize();
-        std::get<5>(f)->normalize();
+        QVector4D v1 = *get<0>(f), v2 = *get<1>(f), v3 = *get<2>(f);
+        QVector3D a(v2-v1),b(v3-v1),point(v1*1/3 + v2*1/3 + v3*1/3);
+
+        QVector3D n(QVector3D::normal(a,b));
 
         // Passando os vértices pro OpenGL
         if(get<6>(f) != nullptr)
-            glColor3fv(get<6>(f)->toColor());
-        glVertex3d((get<0>(f))->x(),(get<0>(f))->y(),(get<0>(f))->z());
-        glVertex3d((get<1>(f))->x(),(get<1>(f))->y(),(get<1>(f))->z());
-        glVertex3d((get<2>(f))->x(),(get<2>(f))->y(),(get<2>(f))->z());
+            glColor3fv(get<6>(f)->toColor(point,n,ambiente,luzes));
+        glVertex3d(v1.x(),v1.y(),v1.z());
+        glVertex3d(v2.x(),v2.y(),v2.z());
+        glVertex3d(v3.x(),v3.y(),v3.z());
+
     }
     glEnd();
 }
 
-void tnw::Model::desenhar(tnw::TransformMatrix m)
+void tnw::Model::desenhar(tnw::TransformMatrix m,float ambiente[3],QList<tnw::Light> luzes)
 {
-    QVector4D aux;
-    glBegin(GL_TRIANGLES);
+
     foreach (tnw::Face f, this->faces) {
+        QVector4D v1 = m*(*get<0>(f)), v2 = m*(*get<1>(f)), v3 = m*(*get<2>(f));
+        QVector3D b(v2-v1),a(v3-v1),point(v1*1/3 + v2*1/3 + v3*1/3);
+
+        QVector3D n(QVector3D::normal(a,b));
         if(get<6>(f) != nullptr)
-            glColor3fv(get<6>(f)->toColor());
-        aux = m*(*std::get<0>(f));
-        glVertex3d(aux.x(),aux.y(),aux.z());
-        aux = m*(*std::get<1>(f));
-        glVertex3d(aux.x(),aux.y(),aux.z());
-        aux = m*(*std::get<2>(f));
-        glVertex3d(aux.x(),aux.y(),aux.z());
+            glColor3fv(get<6>(f)->toColor(point,n,ambiente,luzes));
+        glBegin(GL_TRIANGLES);
+        glVertex3d(v1.x(),v1.y(),v1.z());
+        glVertex3d(v2.x(),v2.y(),v2.z());
+        glVertex3d(v3.x(),v3.y(),v3.z());
+        glEnd();
+        /*glBegin(GL_POINTS);
+            glVertex3d(point.x(),point.y(),point.z());
+        glEnd();*/
     }
-    glEnd();
+
 }
 
 void tnw::Model::aplicarTransformacao(TransformMatrix m)

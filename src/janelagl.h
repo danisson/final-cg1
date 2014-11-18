@@ -15,8 +15,11 @@ public:
 
 protected:
     QList<tnw::Model> modelos;
-    QTimer timer;
     tnw::TransformMatrix projection;
+    QList<tnw::Light> luzes;
+    float ambiente[3];
+
+    QTimer timer;
 
     void initializeGL();
     void resizeGL(int w, int h);

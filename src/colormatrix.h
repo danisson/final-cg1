@@ -1,5 +1,8 @@
 #ifndef COLORMATRIX_H
 #define COLORMATRIX_H
+#include <QList>
+#include "light.h"
+#include <QVector3D>
 
 namespace tnw  {
     class ColorMatrix
@@ -24,7 +27,7 @@ namespace tnw  {
         float  getKs(unsigned i) const;
         void   setKs(float a, float b, float c);
 
-        float* toColor();
+        float* toColor(QVector3D point,QVector3D normal,float ambiente[3],QList<tnw::Light> luzes);
 
         ColorMatrix(); // Construtor
         ColorMatrix(const ColorMatrix& m); // Copiador

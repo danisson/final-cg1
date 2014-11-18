@@ -95,11 +95,67 @@ void tnw::ColorMatrix::setKs(float a, float b, float c)
     m[2][2] = c;
 }
 
-float *tnw::ColorMatrix::toColor()
+float *tnw::ColorMatrix::toColor(QVector3D point,QVector3D normal,float ambiente[3],QList<tnw::Light> luzes)
 {
     float* r = new float[3];
-    for (int i = 0; i < 3; ++i)
-        r[i] = (getKd(i)+getKa(i)+getKs(i))/3;
+    for (int i = 0; i < 3; ++i) {
+        r[i] = getKa(i)*ambiente[i];
+        foreach (tnw::Light l, luzes) {
+            QVector3D lpos = l.getPos();
+            //QVector3D direction =  point - lpos;
+            QVector3D direction =  lpos - point;
+            direction.normalize();
+            r[i] += getKd(i)*l.getKd(i)*(QVector3D::dotProduct(direction,normal));
+            /*if(r[i] < 0 || r[i] > 1)  {
+                printf("r[i] error\nn = %f %f %f\n",normal[0],normal[1],normal[2]);
+                printf("l = %f %f %f\n",direction[0],direction[1],direction[2]);
+                printf("lpos = %f %f %f\n",lpos[0],lpos[1],lpos[2]);
+                printf("point = %f %f %f\n",point[0],point[1],point[2]);
+                printf("d*n = %f\n",QVector3D::dotProduct(direction,normal));
+                printf("kd = %f %f %f\n",l.getKd(0),l.getKd(1),l.getKd(2));
+                printf("r = %f %f %f\n",r[0],r[1],r[2]);
+                throw -1;
+            }*/
+            if(l.getKd(i) > 1) {
+                printf("kd error\nn = %f %f %f\n",normal[0],normal[1],normal[2]);
+                printf("l = %f %f %f\n",direction[0],direction[1],direction[2]);
+                printf("lpos = %f %f %f\n",lpos[0],lpos[1],lpos[2]);
+                printf("kd = %f %f %f\n",l.getKd(0),l.getKd(1),l.getKd(2));
+                printf("point = %f %f %f\n",point[0],point[1],point[2]);
+                throw -1;
+            }
+            if(l.getKs(i) != 0) {
+                printf("ks error\nn = %f %f %f\n",normal[0],normal[1],normal[2]);
+                printf("l = %f %f %f\n",direction[0],direction[1],direction[2]);
+                printf("lpos = %f %f %f\n",lpos[0],lpos[1],lpos[2]);
+                printf("kd = %f %f %f\n",l.getKd(0),l.getKd(1),l.getKd(2));
+                printf("point = %f %f %f\n",point[0],point[1],point[2]);
+                throw -1;
+            }
+        }
+    }
+    if(r[0]== 0.1f && r[1]== 0.1f && r[2]== 0.1f) {
+        printf("only ka error\nn = %f %f %f\n",normal[0],normal[1],normal[2]);
+        printf("point = %f %f %f\n",point[0],point[1],point[2]);
+        printf("r = %f %f %f\n",r[0],r[1],r[2]);
+        printf("kd = %f %f %f\n",getKd(0),getKd(1),getKd(2));
+        int ln = 0;
+        foreach (tnw::Light l, luzes) {
+            QVector3D lpos = l.getPos();
+            //QVector3D direction =  point - lpos;
+            QVector3D direction =  lpos - point;
+            direction.normalize();
+            printf("kd[%d] = %f %f %f\n",ln,l.getKd(0),l.getKd(1),l.getKd(2));
+            printf("d*n[%d] = %f\n",ln,fabs(QVector3D::dotProduct(direction,normal)));
+            printf("rp[%d] = ",ln);
+            for (int i = 0; i < 3; ++i) {
+                printf("%f ",getKd(i)*l.getKd(i)*fabs(QVector3D::dotProduct(direction,normal)));
+            }
+            printf("\n");
+            ln++;
+        }
+        throw -1;
+    }
     return r;
 }
 

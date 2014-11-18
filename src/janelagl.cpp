@@ -15,34 +15,51 @@ JanelaGL::JanelaGL(QWidget *parent) :
 void JanelaGL::initializeGL()
 {
     glEnable(GL_DEPTH_TEST);
+    glPointSize(15);
 
     modelos << tnw::Model("../modelos/MoinhoCor.obj") << tnw::Model("../modelos/Astronauta.obj");
 
     modelos[0].aplicarTransformacao(tnw::translacao(-modelos[0].getPontoMedio()));
     modelos[0].aplicarTransformacao(tnw::escala(1.4,1.4,1.4));
-    modelos[0].aplicarTransformacao(tnw::rotacaoX(20)*tnw::rotacaoY(-10));
+    //modelos[0].aplicarTransformacao(tnw::rotacaoX(20)*tnw::rotacaoY(-10));
     pontoMedioMoinho = modelos[0].getPontoMedio(3);
-
-    projection = tnw::ortho(-1.0,1.0,-1.0,1.0,-1.0,1.0);
-    //projection = tnw::ortho(-2.0,2.0,-2.0,2.0,-2.0,2.0);
-    //projection = tnw::frustum(-2.0, 2.0, -2.0, 2.0, 5.0, -5.0);
-    //projection = tnw::isometric(1,-1.0,1.0,true,true);
 
     modelos[1].aplicarTransformacao(tnw::translacao(-0.1,0.3,0)*tnw::escala(0.1,0.1,0.1));
     pontoMedioAstronauta = modelos[1].getPontoMedio();
+
+    //modelos << tnw::Model("../modelos/cube.obj");
+
+    //projection = tnw::ortho(-1.0,1.0,-1.0,1.0,-1.0,1.0);
+    //projection = tnw::ortho(-2.0,2.0,-2.0,2.0,-2.0,2.0);
+    //projection = tnw::frustum(-2.0, 2.0, -2.0, 2.0, 5.0, -5.0);
+    projection = tnw::isometric(1,-1.0,1.0,true,true);
+
+    // Luz
+    for (int i = 0; i < 3; ++i)
+        ambiente[i] = 0.1;
+
+    tnw::Light l1(1,0.2,0);
+    l1.setKd(1,1,1);
+    l1.setKs(0,0,0);
+    tnw::Light l2(-1,0.2,0);
+    l2.setKd(1,1,1);
+    l2.setKs(0,0,0);
+    //luzes << l1 << l2;
+    luzes << l2;
+
     timer.start(60);
 }
 
 void JanelaGL::desenharModelos()
 {
     foreach (tnw::Model m, modelos) {
-        m.desenhar(projection);
+        m.desenhar(projection,ambiente,luzes);
     }
 }
 
 void JanelaGL::desenharModelos(int i)
 {
-    modelos[i].desenhar(projection);
+    modelos[i].desenhar(projection,ambiente,luzes);
 }
 
 void JanelaGL::update()
@@ -81,8 +98,13 @@ void JanelaGL::paintGL()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     //desenharEixos();
-    glColor3f(1,1,1);
     desenharModelos(0);
     glColor3f(0,0,1);
     desenharModelos(1);
+    glColor3f(1,1,1);
+    glBegin(GL_POINTS);
+    foreach (tnw::Light l, luzes) {
+        glVertex3d(l[0],l[1],l[2]);
+    }
+    glEnd();
 }
