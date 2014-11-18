@@ -44,8 +44,8 @@ void JanelaGL::initializeGL()
     tnw::Light l2(-1,0.2,0);
     l2.setKd(1,1,1);
     l2.setKs(0,0,0);
-    //luzes << l1 << l2;
-    luzes << l2;
+    luzes << l1 << l2;
+    //luzes << l2;
 
     timer.start(60);
 }
