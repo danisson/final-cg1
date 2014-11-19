@@ -32,8 +32,8 @@ protected:
         double right = 1;
         double bottom = -1;
         double top = 1;
-        double near = 1;
-        double far = -1;
+        double near = 0.7;
+        double far = 3;
     } frusValues;
 
     struct isoVal {

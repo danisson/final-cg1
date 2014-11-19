@@ -161,7 +161,7 @@ void JanelaGL::applyOrtho()
 
 void JanelaGL::applyFrustum()
 {
-    projection = tnw::frustum(frusValues.left,frusValues.right,frusValues.bottom,frusValues.top,frusValues.near,frusValues.far);
+    projection = tnw::frustum(frusValues.left,frusValues.right,frusValues.bottom,frusValues.top,frusValues.near,frusValues.far)*tnw::translacao(QVector3D(0,0,-1));
 }
 
 void JanelaGL::applyIso(){
