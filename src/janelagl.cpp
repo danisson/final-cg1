@@ -88,3 +88,82 @@ void JanelaGL::paintGL()
     glColor3f(0,0,1);
     desenharModelos(1);
 }
+
+void JanelaGL::updateOrthoVal(double val)
+{
+    QObject* nVal = sender();
+    QString nome = nVal->objectName();
+    if (nome == "lOrtho"){
+        orthoValues.left = val;
+    } else if (nome == "rOrtho"){
+        orthoValues.right = val;
+    } else if (nome == "tOrtho"){
+        orthoValues.top = val;
+    } else if (nome == "bOrtho"){
+        orthoValues.bottom = val;
+    } else if (nome == "nOrtho"){
+        orthoValues.near = val;
+    } else if (nome == "fOrtho"){
+        orthoValues.far = val;
+    }
+}
+
+void JanelaGL::updateFrustumVal(double val)
+{
+    QObject* nVal = sender();
+    QString nome = nVal->objectName();
+
+    if (nome == "lFrustum"){
+        frusValues.left = val;
+    } else if (nome == "rFrustum"){
+        frusValues.right = val;
+    } else if (nome == "tFrustum"){
+        frusValues.top = val;
+    } else if (nome == "bFrustum"){
+        frusValues.bottom = val;
+    } else if (nome == "nFrustum"){
+        frusValues.near = val;
+    } else if (nome == "fFrustum"){
+        frusValues.far = val;
+    }
+}
+
+void JanelaGL::updateIsoVal(double val)
+{
+    QObject* nVal = sender();
+    QString nome = nVal->objectName();
+
+    if (nome == "sIso"){
+        isoValues.scale = val;
+    } else if (nome == "nIso"){
+        isoValues.near = val;
+    } else if (nome == "fIso"){
+        isoValues.far = val;
+    }
+}
+
+void JanelaGL::updateIsoBoolVal(bool val)
+{
+    QObject* nVal = sender();
+    QString nome = nVal->objectName();
+
+    if (nome == "hIso"){
+        isoValues.positive_hor = val;
+    } else if (nome == "vIso"){
+        isoValues.positive_ver = val;
+    }
+}
+
+void JanelaGL::applyOrtho()
+{
+    projection = tnw::ortho(orthoValues.left,orthoValues.right,orthoValues.bottom,orthoValues.top,orthoValues.near,orthoValues.far);
+}
+
+void JanelaGL::applyFrustum()
+{
+    projection = tnw::frustum(frusValues.left,frusValues.right,frusValues.bottom,frusValues.top,frusValues.near,frusValues.far);
+}
+
+void JanelaGL::applyIso(){
+    projection = tnw::isometric(isoValues.scale,isoValues.near,isoValues.far,isoValues.positive_hor,isoValues.positive_ver);
+}
