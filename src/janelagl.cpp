@@ -154,6 +154,22 @@ void JanelaGL::updateIsoBoolVal(bool val)
     }
 }
 
+void JanelaGL::updatePersVal(double val)
+{
+    QObject* nVal = sender();
+    QString nome = nVal->objectName();
+
+    if (nome=="fovyPers"){
+        persValues.fovy = val;
+    } else if (nome=="aspPers"){
+        persValues.aspect = val;
+    } else if (nome=="nPers"){
+        persValues.near = val;
+    } else if (nome=="fPers"){
+        persValues.far = val;
+    }
+}
+
 void JanelaGL::applyOrtho()
 {
     projection = tnw::ortho(orthoValues.left,orthoValues.right,orthoValues.bottom,orthoValues.top,orthoValues.near,orthoValues.far);
@@ -166,4 +182,8 @@ void JanelaGL::applyFrustum()
 
 void JanelaGL::applyIso(){
     projection = tnw::isometric(isoValues.scale,isoValues.near,isoValues.far,isoValues.positive_hor,isoValues.positive_ver);
+}
+
+void JanelaGL::applyPers(){
+    projection = tnw::perspective(persValues.fovy,persValues.aspect,persValues.near,persValues.far)*tnw::translacao(QVector3D(0,0,-1));
 }
