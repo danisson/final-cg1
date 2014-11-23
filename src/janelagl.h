@@ -26,8 +26,8 @@ protected:
         double right = 1;
         double bottom = -1;
         double top = 1;
-        double near = 0.7;
-        double far = 3;
+        double near = -1;
+        double far = 1;
     } orthoValues;
 
     struct frusVal {
@@ -41,10 +41,10 @@ protected:
 
     struct isoVal {
         double scale = 1;
-        double near = 0.7;
-        double far = 3;
+        double near = -1;
+        double far = 1;
         bool positive_hor = true;
-        bool positive_ver = false;
+        bool positive_ver = true;
     } isoValues;
 
     struct persVal {

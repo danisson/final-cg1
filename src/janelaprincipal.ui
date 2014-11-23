@@ -25,7 +25,7 @@
   <property name="windowTitle">
    <string>Trabalho CG1</string>
   </property>
-  <widget class="QWidget" name="centralwidget">
+  <widget class="QWidget" name="WidgetPrincipal">
    <layout class="QHBoxLayout" name="horizontalLayout">
     <item>
      <widget class="JanelaGL" name="GL" native="true">
@@ -38,7 +38,7 @@
      </widget>
     </item>
     <item>
-     <spacer name="horizontalSpacer">
+     <spacer name="espaco">
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
       </property>
@@ -54,7 +54,7 @@
      </spacer>
     </item>
     <item>
-     <widget class="QTabWidget" name="tabWidget">
+     <widget class="QTabWidget" name="menu">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
         <horstretch>0</horstretch>
@@ -64,11 +64,11 @@
       <property name="currentIndex">
        <number>3</number>
       </property>
-      <widget class="QWidget" name="tab">
+      <widget class="QWidget" name="menuOrtho">
        <attribute name="title">
         <string>Ortho</string>
        </attribute>
-       <widget class="QPushButton" name="pushButton">
+       <widget class="QPushButton" name="aplicarOrtho">
         <property name="geometry">
          <rect>
           <x>10</x>
@@ -90,7 +90,7 @@
           <height>218</height>
          </rect>
         </property>
-        <layout class="QVBoxLayout" name="verticalLayout">
+        <layout class="QVBoxLayout" name="valoresOrto">
          <item>
           <widget class="QDoubleSpinBox" name="lOrtho">
            <property name="minimum">
@@ -146,26 +146,26 @@
          <item>
           <widget class="QDoubleSpinBox" name="nOrtho">
            <property name="minimum">
-            <double>0.000000000000000</double>
+            <double>-100.989999999999995</double>
            </property>
            <property name="maximum">
             <double>100.989999999999995</double>
            </property>
            <property name="value">
-            <double>0.700000000000000</double>
+            <double>-1.000000000000000</double>
            </property>
           </widget>
          </item>
          <item>
           <widget class="QDoubleSpinBox" name="fOrtho">
            <property name="minimum">
-            <double>0.000000000000000</double>
+            <double>-100.989999999999995</double>
            </property>
            <property name="maximum">
             <double>100.989999999999995</double>
            </property>
            <property name="value">
-            <double>3.000000000000000</double>
+            <double>1.000000000000000</double>
            </property>
           </widget>
          </item>
@@ -180,7 +180,7 @@
           <height>221</height>
          </rect>
         </property>
-        <layout class="QVBoxLayout" name="verticalLayout_5">
+        <layout class="QVBoxLayout" name="textoOrto">
          <item>
           <widget class="QLabel" name="label">
            <property name="text">
@@ -226,7 +226,7 @@
         </layout>
        </widget>
       </widget>
-      <widget class="QWidget" name="tab_2">
+      <widget class="QWidget" name="menuFrustum">
        <attribute name="title">
         <string>Frustum</string>
        </attribute>
@@ -239,7 +239,7 @@
           <height>218</height>
          </rect>
         </property>
-        <layout class="QVBoxLayout" name="verticalLayout_2">
+        <layout class="QVBoxLayout" name="valoresFrustum">
          <item>
           <widget class="QDoubleSpinBox" name="lFrustum">
            <property name="minimum">
@@ -329,7 +329,7 @@
           <height>221</height>
          </rect>
         </property>
-        <layout class="QVBoxLayout" name="verticalLayout_6">
+        <layout class="QVBoxLayout" name="textoFrustum">
          <item>
           <widget class="QLabel" name="label_7">
            <property name="text">
@@ -374,7 +374,7 @@
          </item>
         </layout>
        </widget>
-       <widget class="QPushButton" name="pushButton_2">
+       <widget class="QPushButton" name="aplicarFrustum">
         <property name="geometry">
          <rect>
           <x>10</x>
@@ -388,7 +388,7 @@
         </property>
        </widget>
       </widget>
-      <widget class="QWidget" name="tab_3">
+      <widget class="QWidget" name="menuPerspective">
        <attribute name="title">
         <string>Perspective</string>
        </attribute>
@@ -401,7 +401,7 @@
           <height>218</height>
          </rect>
         </property>
-        <layout class="QVBoxLayout" name="verticalLayout_3">
+        <layout class="QVBoxLayout" name="valoresPerpective">
          <item>
           <widget class="QDoubleSpinBox" name="fovyPers">
            <property name="minimum">
@@ -456,7 +456,7 @@
          </item>
         </layout>
        </widget>
-       <widget class="QPushButton" name="pushButton_3">
+       <widget class="QPushButton" name="aplicarPerspective">
         <property name="geometry">
          <rect>
           <x>10</x>
@@ -478,7 +478,7 @@
           <height>201</height>
          </rect>
         </property>
-        <layout class="QVBoxLayout" name="verticalLayout_7">
+        <layout class="QVBoxLayout" name="textoPerspective">
          <item>
           <widget class="QLabel" name="label_13">
            <property name="text">
@@ -510,7 +510,7 @@
         </layout>
        </widget>
       </widget>
-      <widget class="QWidget" name="tab_4">
+      <widget class="QWidget" name="menuIso">
        <attribute name="title">
         <string>Iso</string>
        </attribute>
@@ -523,7 +523,7 @@
           <height>151</height>
          </rect>
         </property>
-        <layout class="QVBoxLayout" name="verticalLayout_4">
+        <layout class="QVBoxLayout" name="valoresIso">
          <item>
           <widget class="QDoubleSpinBox" name="sIso">
            <property name="minimum">
@@ -540,32 +540,32 @@
          <item>
           <widget class="QDoubleSpinBox" name="nIso">
            <property name="minimum">
-            <double>0.000000000000000</double>
+            <double>-100.989999999999995</double>
            </property>
            <property name="maximum">
             <double>100.989999999999995</double>
            </property>
            <property name="value">
-            <double>0.700000000000000</double>
+            <double>-1.000000000000000</double>
            </property>
           </widget>
          </item>
          <item>
           <widget class="QDoubleSpinBox" name="fIso">
            <property name="minimum">
-            <double>0.000000000000000</double>
+            <double>-100.989999999999995</double>
            </property>
            <property name="maximum">
             <double>100.989999999999995</double>
            </property>
            <property name="value">
-            <double>3.000000000000000</double>
+            <double>1.000000000000000</double>
            </property>
           </widget>
          </item>
         </layout>
        </widget>
-       <widget class="QPushButton" name="pushButton_4">
+       <widget class="QPushButton" name="aplicarIso">
         <property name="geometry">
          <rect>
           <x>10</x>
@@ -587,7 +587,7 @@
           <height>141</height>
          </rect>
         </property>
-        <layout class="QVBoxLayout" name="verticalLayout_8">
+        <layout class="QVBoxLayout" name="textoIso">
          <item>
           <widget class="QLabel" name="label_17">
            <property name="text">
@@ -620,7 +620,7 @@
           <height>60</height>
          </rect>
         </property>
-        <layout class="QVBoxLayout" name="verticalLayout_9">
+        <layout class="QVBoxLayout" name="opcoesIso">
          <item>
           <widget class="QCheckBox" name="hIso">
            <property name="layoutDirection">
@@ -642,6 +642,9 @@
            <property name="text">
             <string>Vertical</string>
            </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
           </widget>
          </item>
         </layout>
@@ -657,7 +660,7 @@
      <x>0</x>
      <y>0</y>
      <width>600</width>
-     <height>27</height>
+     <height>25</height>
     </rect>
    </property>
   </widget>
@@ -781,7 +784,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>pushButton</sender>
+   <sender>aplicarOrtho</sender>
    <signal>clicked()</signal>
    <receiver>GL</receiver>
    <slot>applyOrtho()</slot>
@@ -893,7 +896,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>pushButton_2</sender>
+   <sender>aplicarFrustum</sender>
    <signal>clicked()</signal>
    <receiver>GL</receiver>
    <slot>applyFrustum()</slot>
@@ -973,7 +976,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>pushButton_3</sender>
+   <sender>aplicarPerspective</sender>
    <signal>clicked()</signal>
    <receiver>GL</receiver>
    <slot>applyPers()</slot>
@@ -1069,7 +1072,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>pushButton_4</sender>
+   <sender>aplicarIso</sender>
    <signal>clicked()</signal>
    <receiver>GL</receiver>
    <slot>applyIso()</slot>
