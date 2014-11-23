@@ -211,6 +211,18 @@ tnw::TransformMatrix tnw::frustum(double left, double right, double bottom, doub
     return m;
 }
 
+tnw::TransformMatrix tnw::perspective(double fovy, double aspect, double near, double far)
+{
+    double f = 1/tan(tnw::radianos(fovy)/2);
+    tnw::TransformMatrix m =
+        {{f/aspect,0,0,0},
+         {0,f,0,0},
+         {0,0,(far+near)/(near-far),2*(far*near)/(near-far)},
+         {0,0,-1,0}};
+    return m;
+
+}
+
 tnw::TransformMatrix tnw::isometric(double scale, double near, double far,bool positive_hor, bool positive_ver)
 {
     double rot_y = 45.0;

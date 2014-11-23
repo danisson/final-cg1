@@ -21,18 +21,13 @@ void JanelaGL::initializeGL()
 
     modelos[0].aplicarTransformacao(tnw::translacao(-modelos[0].getPontoMedio()));
     modelos[0].aplicarTransformacao(tnw::escala(1.4,1.4,1.4));
-    //modelos[0].aplicarTransformacao(tnw::rotacaoX(20)*tnw::rotacaoY(-10));
+    modelos[0].aplicarTransformacao(tnw::rotacaoX(20)*tnw::rotacaoY(-10));
     pontoMedioMoinho = modelos[0].getPontoMedio(3);
 
     modelos[1].aplicarTransformacao(tnw::translacao(-0.1,0.3,0)*tnw::escala(0.1,0.1,0.1));
     pontoMedioAstronauta = modelos[1].getPontoMedio();
 
-    //modelos << tnw::Model("../modelos/cube.obj");
-
-    //projection = tnw::ortho(-1.0,1.0,-1.0,1.0,-1.0,1.0);
-    //projection = tnw::ortho(-2.0,2.0,-2.0,2.0,-2.0,2.0);
-    //projection = tnw::frustum(-2.0, 2.0, -2.0, 2.0, 5.0, -5.0);
-    projection = tnw::isometric(1,-1.0,1.0,true,true);
+    projection = tnw::ortho(-1.0,1.0,-1.0,1.0,-1.0,1.0);
 
     // Luz
     for (int i = 0; i < 3; ++i)
@@ -107,4 +102,103 @@ void JanelaGL::paintGL()
         glVertex3d(l[0],l[1],l[2]);
     }
     glEnd();
+}
+
+void JanelaGL::updateOrthoVal(double val)
+{
+    QObject* nVal = sender();
+    QString nome = nVal->objectName();
+    if (nome == "lOrtho"){
+        orthoValues.left = val;
+    } else if (nome == "rOrtho"){
+        orthoValues.right = val;
+    } else if (nome == "tOrtho"){
+        orthoValues.top = val;
+    } else if (nome == "bOrtho"){
+        orthoValues.bottom = val;
+    } else if (nome == "nOrtho"){
+        orthoValues.near = val;
+    } else if (nome == "fOrtho"){
+        orthoValues.far = val;
+    }
+}
+
+void JanelaGL::updateFrustumVal(double val)
+{
+    QObject* nVal = sender();
+    QString nome = nVal->objectName();
+
+    if (nome == "lFrustum"){
+        frusValues.left = val;
+    } else if (nome == "rFrustum"){
+        frusValues.right = val;
+    } else if (nome == "tFrustum"){
+        frusValues.top = val;
+    } else if (nome == "bFrustum"){
+        frusValues.bottom = val;
+    } else if (nome == "nFrustum"){
+        frusValues.near = val;
+    } else if (nome == "fFrustum"){
+        frusValues.far = val;
+    }
+}
+
+void JanelaGL::updateIsoVal(double val)
+{
+    QObject* nVal = sender();
+    QString nome = nVal->objectName();
+
+    if (nome == "sIso"){
+        isoValues.scale = val;
+    } else if (nome == "nIso"){
+        isoValues.near = val;
+    } else if (nome == "fIso"){
+        isoValues.far = val;
+    }
+}
+
+void JanelaGL::updateIsoBoolVal(bool val)
+{
+    QObject* nVal = sender();
+    QString nome = nVal->objectName();
+
+    if (nome == "hIso"){
+        isoValues.positive_hor = val;
+    } else if (nome == "vIso"){
+        isoValues.positive_ver = val;
+    }
+}
+
+void JanelaGL::updatePersVal(double val)
+{
+    QObject* nVal = sender();
+    QString nome = nVal->objectName();
+
+    if (nome=="fovyPers"){
+        persValues.fovy = val;
+    } else if (nome=="aspPers"){
+        persValues.aspect = val;
+    } else if (nome=="nPers"){
+        persValues.near = val;
+    } else if (nome=="fPers"){
+        persValues.far = val;
+    }
+}
+
+void JanelaGL::applyOrtho()
+{
+    projection = tnw::ortho(orthoValues.left,orthoValues.right,orthoValues.bottom,orthoValues.top,orthoValues.near,orthoValues.far);
+}
+
+void JanelaGL::applyFrustum()
+{
+    projection = tnw::frustum(frusValues.left,frusValues.right,frusValues.bottom,frusValues.top,frusValues.near,frusValues.far)*tnw::translacao(QVector3D(0,0,-1));
+}
+
+void JanelaGL::applyIso(){
+    projection = tnw::isometric(isoValues.scale,isoValues.near,isoValues.far,isoValues.positive_hor,isoValues.positive_ver);
+}
+
+void JanelaGL::applyPers(){
+    projection = tnw::perspective(persValues.fovy,persValues.aspect,persValues.near,persValues.far)*tnw::translacao(QVector3D(0,0,-1));
 }
