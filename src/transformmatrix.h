@@ -1,6 +1,8 @@
 #ifndef TRANSFORMMATRIX_H
 #define TRANSFORMMATRIX_H
 
+#include <vector>
+#include <initializer_list>
 #include <QVector4D>
 #include <QVector3D>
 
@@ -9,7 +11,7 @@ namespace tnw {
     class TransformMatrix
     {
     private:
-        double** matrix;
+        std::vector<std::vector<double>> matrix;
     public:
         // Métodos
         void mostrar();
@@ -22,8 +24,8 @@ namespace tnw {
 
         // Construtores
         TransformMatrix(); // Identidade
+        TransformMatrix(std::initializer_list<std::initializer_list<double>> l); // Dado em tempo de compilação
         TransformMatrix(double a[4][4]); // Por um vetor
-        TransformMatrix(double** a); // Por um vetor dinâmico
         TransformMatrix(const TransformMatrix &obj); //Copiador
 
         // Desconstrutor
@@ -39,6 +41,7 @@ namespace tnw {
     //Funções que retornam as matrizes de transformação
     TransformMatrix translacao(double x, double y, double z);
     TransformMatrix translacao(QVector3D v);
+    TransformMatrix translacao(QVector4D v);
     TransformMatrix rotacaoX(double angGraus);
     TransformMatrix rotacaoY(double angGraus);
     TransformMatrix rotacaoZ(double angGraus);
@@ -47,6 +50,12 @@ namespace tnw {
 
     //Função pra transformar graus em radianos
     double radianos(double graus);
+
+    //Funções que retornam as matrizes de projeção
+    TransformMatrix ortho(double left, double right, double bottom, double top, double near, double far);
+    TransformMatrix frustum(double left, double right, double bottom, double top, double near, double far);
+    TransformMatrix perspective(double fovy, double aspect, double near, double far);
+    TransformMatrix isometric(double scale,double near, double far,bool positive_hor, bool positive_ver);
 
 }
 #endif // TRANSFORMMATRIX_H
