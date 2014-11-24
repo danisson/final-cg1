@@ -17,7 +17,7 @@ void JanelaGL::initializeGL()
     glEnable(GL_DEPTH_TEST);
     glPointSize(15);
 
-    modelos << tnw::Model("../modelos/MoinhoCor.obj") << tnw::Model("../modelos/Astronauta.obj");
+    modelos << tnw::Model("../modelos/MoinhoCor.obj") << tnw::Model("../modelos/AstronautaCor.obj");
 
     modelos[0].aplicarTransformacao(tnw::translacao(-modelos[0].getPontoMedio()));
     modelos[0].aplicarTransformacao(tnw::escala(1.4,1.4,1.4));
